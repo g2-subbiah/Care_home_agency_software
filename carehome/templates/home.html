@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <title>Divine Health and Care Services</title>
+</head>
+<body>
+    <div class="titlecontents text-center my-4">
+        <h1>Divine Health and Care Services</h1>
+        <h2>Welcome Page</h2>
+    </div>
+
+    <div class="text-center my-4">
+        <img class="img1" src="{% static 'image/Picture1.png' %}" alt="home-image" width="200" height="200">
+    </div>
+
+    <div class="dropdown text-center my-4">
+        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            User Login
+        </button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="Agency/agencyloginpage">Agency Login</a></li>
+            <li><a class="dropdown-item" href="#">Staff Login</a></li>
+            <li><a class="dropdown-item" href="#">Client Login</a></li>
+        </ul>
+    </div>
+
+    <div class="text-center my-4">
+        <img class="img2" src="{% static 'image/welcome2.png' %}" alt="welcome-image">
+    </div>
+</body>
+</html>

@@ -1,0 +1,115 @@
+body{
+    background-color: aquamarine;
+}
+div.page1 {
+    /*border: 1px solid black;*/
+    background-color: lightblue;
+    padding-top: 30px;
+    padding-right: 250px;
+    padding-bottom: 30px;
+    padding-left: 250px;
+  }
+
+.client-login {
+    width: 75%;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.form-style {
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.form-style form {
+    width: 300px;
+}
+
+.titlecontents {
+    text-align: center;
+h1{
+    color:crimson;
+}
+h2{
+    color:darkblue;
+}
+}
+
+.btn btn-secondary dropdown-toggle dropdown-toggle-split{
+
+    background-color: black;
+}
+
+.img1 {
+    width: 35%; /* Example of CSS overriding width */
+    height: 60%;
+    float: left;
+    margin-right: 10%;
+    margin-left: 10%;
+}
+
+.img2 {
+    width: 35%; /* Example of CSS overriding width */
+    height: 20%;
+    float: right;
+    margin-right: 10%;
+    margin-top: 10%;
+}
+
+.img3 {
+    width: 100%; /* Example of CSS overriding width */
+    height: 100%;
+    float: left;
+    margin-right: 0%;
+    margin-left: 10%;
+}
+
+
+.btn btn-secondary dropdown-toggle {
+
+    margin-left: 20%;
+
+}
+
+
+.titlecontents {
+    text-align: center;
+    margin-top: 50px;
+}
+.titlecontents img {
+    max-width: 100%;
+    height: auto;
+}
+.client-login {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+.form-style h3 {
+    margin-bottom: 20px;
+}
+.form-checkbox {
+    display: flex;
+    align-items: center;
+}
+.form-checkbox input {
+    margin-right: 2%;
+}
+
+body, html {
+    height: 100%;
+    margin: 0;
+}
+
+.container {
+    height: 100vh;
+}
+
+
+.client-login {
+    height: 100%;
+}
+
+.card-title {
+    text-align: center;
+}
