@@ -22,5 +22,10 @@ from Agency import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("",views.home,name="home-page"),
-    path("Agency/",include("Agency.urls"))
+    path("Agency/",include("Agency.urls")),
+    path("client/",include("client.urls")),
+    path("staff/",include("staff.urls")),
+    path("forgetpw/",include("Agency.urls"))
+
+
 ]

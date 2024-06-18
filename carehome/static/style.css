@@ -74,7 +74,7 @@ h2{
 
 .backbutton {
     margin-left: 90%; /* Adjust the margin as needed */
-    margin-bottom: -12%; /* Further reduce space between back button and container */
+    margin-bottom: -9%; /* Further reduce space between back button and container */
 }
 .titlecontents img {
     max-width: 100%;
@@ -110,3 +110,5 @@ body, html {
 .card-title {
     text-align: center;
 }
+
+
