@@ -15,12 +15,12 @@
         <h1>Divine Health and Care Services</h1>
         <h2>Agency Login Page</h2>
     </div>
-    <div class="backbutton">
+    <div class="backbutton text-center mb-4">
         <a href="{% url 'home-page' %}">
             <button type="button" class="btn btn-secondary">Back</button>
         </a>    
     </div>    
-    <div class="container d-flex justify-content-center align-items-center my-3" style="min-height: 400px;">
+    <div class="container d-flex justify-content-center align-items-center my-3" style="max-height: 450px; background-color: rgb(118, 175, 222);">
         <div class="row w-100">
             <div class="col-md-6 d-flex justify-content-center align-items-center">
                 <img class="img3" src="{% static 'image/Picture2.png' %}" alt="home-image" style="max-height: 400px;">
@@ -30,15 +30,19 @@
                     <div class="card-title mb-3 mt-3 form-style text-center">
                         <h3>Agency Login</h3>
 
-                        <form class="mb-3 mt-3" method="post">
+                        <form class="mb-3 mt-3" method="post" action="{% url 'agency-login' %}">
+                            {% csrf_token %}
+                            {{ form.non_field_errors }}
                             <div class="mb-3">
-                                <input type="text" class="form-control" placeholder="Username">
+                                <input type="text" class="form-control" name="username" placeholder="Username" value="{{ form.username.value|default:'' }}">
+                                {{ form.username.errors }}
                             </div>
                             <div class="mb-3">
-                                <input type="password" class="form-control" placeholder="Password">
+                                <input type="password" class="form-control" name="password" placeholder="Password" value="{{ form.password.value|default:'' }}">
+                                {{ form.password.errors }}
                             </div>
                             <div class="mb-3 form-checkbox text-start">
-                                <input type="checkbox" value="" id="dlexCheckDefault"> Remember Me
+                                <input type="checkbox" name="remember_me" id="rememberMe"> Remember Me
                                 <a href="{% url 'forgetpw' %}" style="margin-left: 20%; color: aliceblue;">Forget Password</a>
                             </div>
                             <br>

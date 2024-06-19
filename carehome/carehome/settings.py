@@ -140,3 +140,9 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# settings.py
+AUTH_USER_MODEL = 'Agency.CustomUser'
+#AUTH_USER_MODEL = 'staff.CustomUser'
+
+
