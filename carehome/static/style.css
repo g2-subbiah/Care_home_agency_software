@@ -1,15 +1,4 @@
-body{
-    background-color: rgb(118, 175, 222);
-}
-div.page1 {
-    background-color: rgb(118, 175, 222);
-    padding-top: 30px;
-    padding-right: 250px;
-    padding-bottom: 30px;
-    padding-left: 250px;
-  }
-
-.client-login {
+ .client-login {
     width: 75%;
     margin-right: auto;
     margin-left: auto;

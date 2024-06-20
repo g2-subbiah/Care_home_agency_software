@@ -30,16 +30,29 @@
             <ul class="navbar-nav">               
                 <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Admin Works
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="register">New Staff Registration</a></li>
+                    <li><a class="dropdown-item" href="client_register">New Care-home Registration</a></li>
+                    <li><a class="dropdown-item" href="{% url 'create-weeks' year=2024 %}">Week Creation</a></li>
+                </ul>
+                </li>
+            </ul>
+
+            <ul class="navbar-nav">               
+                <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Care Home Shifts
                 </a>
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="#">001 - Saffron Garden</a></li>
                     <li><a class="dropdown-item" href="#">002 - Orchard Grove</a></li>
                     <li><a class="dropdown-item" href="#">003 - Little Heath</a></li>
-                    <li><a class="dropdown-item" href="client_register">New Care-home Registration</a></li>
                 </ul>
                 </li>
             </ul>
+
             <ul class="navbar-nav">               
                 <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -115,7 +128,7 @@
                     Payroll Management
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Weekly Report</a></li>
+                    <li><a class="dropdown-item" href="weekly_report">Weekly Report</a></li>
                     <li><a class="dropdown-item" href="#">Weekly Paydetails</a></li>
                     <li><a class="dropdown-item" href="#">Invoices</a></li>
                     <li><a class="dropdown-item" href="#">Payslips</a></li>
@@ -123,13 +136,13 @@
                 </li>
             </ul>
             </div>
-            <div class="btn-group dropend">
+            <!-- <div class="btn-group dropend">
                 <a href="register">
                 <button type="button" class="btn btn-secondary">
                     Register New Staff
                 </button>
                 </a>
-            </div>
+            </div> -->
         </div>
         </nav> 
     </body>

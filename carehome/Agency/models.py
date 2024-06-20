@@ -8,11 +8,3 @@ class CustomUser(AbstractUser):
     user_permissions = models.ManyToManyField(Permission, related_name='customuser_set_permissions')
 
 
-# Create your models here.
-# class User(models.Model):
-#     username = models.CharField(max_length=150, unique=True)
-#     password = models.CharField(max_length=128)  # Storing hashed passwords is recommended
-
-#     def __str__(self):
-#         return self.username
-

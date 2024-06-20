@@ -7,8 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <title>Staff Login Page</title>    
+    <title>Online Timesheet</title>    
     <style>
         body {
             background-color: rgb(118, 175, 222);
@@ -25,29 +24,39 @@
             margin-top: 0%;
             display: flex;
             flex-direction: column;
-            align-items: center;
+            align-items: left;
         }
 
         .page1 .input-group {
-            width: 100%; /* Make input groups full width */
-            max-width: 100%; /* Set a max width for better responsiveness */
+            width: 100%; 
+            max-width: 60%; 
+            margin-left: 20%;
         }
 
         .page1 .m-signature-pad {
-            width: 100%; /* Make signature pads full width */
-            max-width: 100%; /* Set a max width for better responsiveness */
-            margin-bottom: 1rem; /* Add some space at the bottom */
+            width: 100%; 
+            max-width: 60%; 
+            margin-bottom: 1rem; 
+            margin-left: 20%;
+
         }
 
         .page1 .m-signature-pad canvas {
             width: 60%; 
             margin-left: 20%;
             margin-top: 1%;
+            background-color: white;
+            border:2px solid
         }
 
         .backbutton {
             text-align: center;
             margin-bottom: 1rem;
+        }
+
+        .form-buttons {
+            display: flex;
+            margin: 10%;
         }
     </style>
 </head>
@@ -57,76 +66,148 @@
         <h2>Online Timesheet</h2>
     </div>
     <div class="backbutton">
-        <a href="{% url 'staff-login' %}">
+        <a href="{% url 'staff-front' %}">
             <button type="button" class="btn btn-secondary">Back</button>
         </a>    
     </div>
 
     <div class="page1">
-        <div class="input-group mb-3">
-            <span class="input-group-text" id="inputGroup-sizing-default">First and last name</span>
-            <input type="text" aria-label="First name" class="form-control">
-            <input type="text" aria-label="Last name" class="form-control">
-        </div>
-        
-        <div class="input-group mb-3">
-            <label class="input-group-text" for="inputGroupSelect01">Name of the Care home</label>
-            <select class="form-select" id="inputGroupSelect01">
-                <option selected>Choose...</option>
-                <option value="1">Option 1</option>
-                <option value="2">Option 2</option>
-                <option value="3">Option 3</option>
-            </select>
-        </div>
-                            
-        <div class="input-group mb-3">
-            <span class="input-group-text" id="inputGroup-sizing-default">Date of Work</span>
-            <input type="date" id="start" name="trip-start" max="2018-12-31" class="form-control">
-        </div>
-
-        <div class="input-group mb-3">
-            <span class="input-group-text" id="inputGroup-sizing-default">Shift Started Time</span>
-            <input value="08:00" type="time" id="appt" name="appt" class="form-control">
-        </div>
-
-        <div class="input-group mb-3">
-            <span class="input-group-text" id="inputGroup-sizing-default">Break Started Time</span>
-            <input type="time" id="appt" name="appt" class="form-control">
-        </div>
-
-        <div class="input-group mb-3">
-            <span class="input-group-text" id="inputGroup-sizing-default">Break Finished Time</span>
-            <input type="time" id="appt" name="appt" class="form-control">
-        </div>
-
-        <div class="input-group mb-3">
-            <span class="input-group-text" id="inputGroup-sizing-default">Shift Finished Time</span>
-            <input value="20:00" type="time" id="appt" name="appt" class="form-control">
-        </div>
-
-        <div id="signature-pad" class="m-signature-pad">
-            <span class="input-group-text" id="inputGroup-sizing-default">Staff Signature</span>
-            <div class="m-signature-pad--body">
-                <canvas id="signature" width="300" height="100" style="border:2px solid; background-color: white;"></canvas>
-            </div>
-        </div>
+        <form id="timesheet-form" method="post" action="{% url 'submit-timesheet' %}" enctype="multipart/form-data">
+            {% csrf_token %}
             
-        <div class="input-group mb-3">
-            <span class="input-group-text" id="inputGroup-sizing-default">Name of the Client Rep.</span>
-            <input type="mytext" maxlength="30" size="30" width="30px" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-        </div>
-
-        <div class="input-group mb-3">
-            <span class="input-group-text" id="inputGroup-sizing-default">Position</span>
-            <input type="mytext" maxlength="30" size="30" width="30px" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-        </div>
-
-        <div id="signature-pad" class="m-signature-pad">
-            <span class="input-group-text" id="inputGroup-sizing-default">Client Rep. Signature</span>
-            <div class="m-signature-pad--body">
-                <canvas id="signature" width="300" height="100" style="border:2px solid; background-color: white;"></canvas>
+            <!-- First and Last Name (Assuming these are pre-filled from logged-in user) -->
+            <div class="input-group mb-3">
+                <span class="input-group-text">First Name</span>
+                <input type="text" class="form-control" name="first_name" value="{{ user.first_name }}" readonly>
             </div>
-        </div>
-    </div>    
+            <div class="input-group mb-3">
+                <span class="input-group-text">Last Name</span>
+                <input type="text" class="form-control" name="last_name" value="{{ user.last_name }}" readonly>
+            </div>
+            
+            <!-- Care Home Name (Dropdown) -->
+            <div class="input-group mb-3">
+                <label class="input-group-text" for="care_home">Name of the Care home</label>
+                <select class="form-select" id="care_home" name="care_home_name">
+                    <option selected disabled>Select Care Home</option>
+                    {% for client in form.fields.care_home_name.queryset %}
+                        <option value="{{ client.id }}">{{ client.username }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <!-- Date of Work (Default to Current Date) -->
+            <div class="input-group mb-3">
+                <span class="input-group-text">Date of Work</span>
+                <input type="date" class="form-control" name="date_of_work" value="{{ form.fields.date_of_work.initial|date:'Y-m-d' }}" required>
+            </div>
+
+            <!-- Shift Started Time -->
+            <div class="input-group mb-3">
+                <span class="input-group-text">Shift Started Time</span>
+                <input type="datetime-local" class="form-control" name="shift_started_time" id="shift_started_time" required>
+            </div>
+
+            <!-- Break Started Time -->
+            <div class="input-group mb-3">
+                <span class="input-group-text">Break Started Time</span>
+                <input type="time" class="form-control" name="break_started_time" id="break_started_time" required>
+            </div>
+
+            <!-- Break Finished Time -->
+            <div class="input-group mb-3">
+                <span class="input-group-text">Break Finished Time</span>
+                <input type="time" class="form-control" name="break_finished_time" id="break_finished_time" required>
+            </div>
+
+            <!-- Shift Finished Time -->
+            <div class="input-group mb-3">
+                <span class="input-group-text">Shift Finished Time</span>
+                <input type="datetime-local" class="form-control" name="shift_finished_time" id="shift_finished_time" required>
+            </div>
+
+            <!-- Staff Signature (Canvas) -->
+            <div id="signature-pad" class="m-signature-pad">
+                <span class="input-group-text">Staff Signature</span>
+                <div class="m-signature-pad--body">
+                    <canvas id="staff_signature_canvas"></canvas>
+                    <input type="hidden" name="staff_signature_image" id="staff_signature_image">
+                </div>
+            </div>
+                
+            <!-- Name of the Client Rep. -->
+            <div class="input-group mb-3">
+                <span class="input-group-text">Name of the Client Rep.</span>
+                <input type="text" class="form-control" name="client_rep_name" maxlength="30" size="30" required>
+            </div>
+
+            <!-- Position -->
+            <div class="input-group mb-3">
+                <span class="input-group-text">Position</span>
+                <input type="text" class="form-control" name="client_rep_position" maxlength="30" size="30" required>
+            </div>
+
+            <!-- Client Rep. Signature (Canvas) -->
+            <div id="signature-pad" class="m-signature-pad">
+                <span class="input-group-text">Client Rep. Signature</span>
+                <div class="m-signature-pad--body">
+                    <canvas id="client_signature_canvas"></canvas>
+                    <input type="hidden" name="client_rep_signature_image" id="client_rep_signature_image">
+                </div>
+            </div>
+
+            <!-- Submit and Reset Buttons -->
+            <div class="form-buttons">
+                <button type="button" class="btn btn-primary" style="margin-left: 85%;" onclick="resetForm()">Reset</button>
+                <button type="submit" class="btn btn-primary" style="margin-left: 1%;">Submit</button>
+            </div>
+        </form>
+    </div>
+  
+    <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
+    <script>
+        // Initialize Signature Pad for Staff Signature
+        var staffSignaturePad = new SignaturePad(document.getElementById('staff_signature_canvas'));
+        var staffSignatureInput = document.getElementById('staff_signature_image');
+
+        // Initialize Signature Pad for Client Rep Signature
+        var clientSignaturePad = new SignaturePad(document.getElementById('client_signature_canvas'));
+        var clientSignatureInput = document.getElementById('client_rep_signature_image');
+
+        // Save signature as image data when the form is submitted
+        document.querySelector('form').addEventListener('submit', function (event) {
+            staffSignatureInput.value = staffSignaturePad.toDataURL();
+            clientSignatureInput.value = clientSignaturePad.toDataURL();
+        });
+
+        // Function to reset the form except for specific fields
+        function resetForm() {
+            var form = document.getElementById('timesheet-form');
+            form.reset();
+
+            // Refill the read-only fields with their original values
+            form.first_name.value = "{{ user.first_name }}";
+            form.last_name.value = "{{ user.last_name }}";
+            form.date_of_work.value = "{{ form.fields.date_of_work.initial|date:'Y-m-d' }}";
+
+            // Clear the signatures
+            staffSignaturePad.clear();
+            clientSignaturePad.clear();
+        }
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get the current date
+            let now = new Date();
+            
+            // Format the date to YYYY-MM-DD
+            let dateStr = now.toISOString().split('T')[0];
+            
+            // Set the default values with the current date and specific times
+            document.getElementById('shift_started_time').value = dateStr + 'T08:00';
+            document.getElementById('shift_finished_time').value = dateStr + 'T20:00';
+        });
+    </script>
+    
 </body>
 </html>

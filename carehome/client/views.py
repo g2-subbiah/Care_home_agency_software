@@ -9,6 +9,7 @@ from Agency.backends import GroupBasedBackend
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 
+
 def clientlogin(request):
     users = CustomUser.objects.filter(groups__name='client')  # Retrieve client users
     if request.method == 'POST':
@@ -48,5 +49,6 @@ def client_front(request):
         'first_name': request.user.first_name,
     }
     return render(request, "client/clientfrontpage.html", context)
+
 
 

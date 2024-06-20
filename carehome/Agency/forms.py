@@ -24,3 +24,5 @@ class ClientLoginForm(forms.Form):
     username = forms.ModelChoiceField(queryset=CustomUser.objects.filter(groups__name='client'), empty_label="Select a client", widget=forms.Select(attrs={'class': 'form-control'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
 
+
+

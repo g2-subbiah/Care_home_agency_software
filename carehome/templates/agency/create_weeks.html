@@ -1,0 +1,24 @@
+<!-- create_weeks.html (inside your templates directory) -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Weeks Table</title>
+    <!-- Include any necessary CSS or Bootstrap -->
+</head>
+<body>
+    <div>
+        <h2>Create Weeks Table for {{ year }}</h2>
+        <form method="post" action="{% url 'create-weeks' year=year %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary">Create Weeks</button>
+        </form>
+    </div>
+    <!-- Optionally, display messages if any -->
+    {% if messages %}
+        {% for message in messages %}
+            <div>{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+</body>
+</html>
