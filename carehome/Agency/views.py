@@ -17,6 +17,17 @@ from staff.models import WeekDateRange, TimeSheet
 from datetime import timedelta
 from staff.models import TimeSheet
 import csv
+import os
+from django.views.generic import View
+from django.conf import settings  
+from django.shortcuts import render, redirect
+from .models import *
+from .forms import *
+from .weekly_processed_report import WeeklyReportView, ClearTimeSheetsView
+
+# Your other view functions here...
+
+
 
 
 from .models import CustomUser
@@ -42,7 +53,7 @@ def agencylogin(request):
             user = GroupBasedBackend().authenticate(request, username=username, password=password, group='Agency')
             if user is not None:
                 login(request, user)
-                return redirect('agency-front')  # Redirect to the agency home page
+                return redirect('agency-front')  # Redirecting to the agency home page
             else:
                 return HttpResponse("Invalid login credentials or unauthorized access")
     else:
@@ -91,70 +102,7 @@ def agency_logout(request):
     return redirect('home-page')
 
 
-class WeeklyReportView(View):
-    template_name = 'agency/weekly_report.html'
-
-    def get(self, request):
-        # Retrieve available years and week numbers for dropdown
-        week_date_ranges = WeekDateRange.objects.all().order_by('year', 'week_number')
-        context = {
-            'week_date_ranges': week_date_ranges,
-
-        }
-        return render(request, self.template_name, context)
-
-    def post(self, request):
-        year = request.POST.get('year')
-        week_number = request.POST.get('week_number')
-
-        # Retrieve TimeSheet entries for the selected week
-        timesheets = TimeSheet.objects.filter(
-            date_of_work__gte=WeekDateRange.objects.get(year=year, week_number=week_number).start_date,
-            date_of_work__lte=WeekDateRange.objects.get(year=year, week_number=week_number).end_date
-        )
-
-        # Export the retrieved data to CSV
-        response = HttpResponse(content_type='text/csv')
-        csv_filename = f'weekly_report_week_{week_number}.csv'
-        response['Content-Disposition'] = f'attachment; filename="{csv_filename}"'
-
-        writer = csv.writer(response)
-        writer.writerow(['User', 'Date of Work', 'Shift Started Time', 'Break Started Time', 'Break Finished Time', 'Shift Finished Time', 'Client Rep Name', 'Client Rep Position'])
-
-        for timesheet in timesheets:
-            writer.writerow([
-                timesheet.user.get_full_name(),
-                timesheet.date_of_work,
-                timesheet.shift_started_time,
-                timesheet.break_started_time,
-                timesheet.break_finished_time,
-                timesheet.shift_finished_time,
-                timesheet.client_rep_name,
-                timesheet.client_rep_position,
-            ])
-
-        # Clear entries from TimeSheet for the selected week
-        timesheets.delete()
-
-        return response
-        
 
 
-class ClearTimeSheetsView(View):
-
-    def post(self, request):
-        start_date = request.POST.get('start_date')
-        end_date = request.POST.get('end_date')
-
-        try:
-            # Delete TimeSheet entries for the selected week
-            TimeSheet.objects.filter(date_of_work__range=[start_date, end_date]).delete()
-
-            # Redirect back to the weekly report page or any other appropriate page
-            return redirect('weekly_report')
-
-        except Exception as e:
-            # Handle any errors during deletion
-            return redirect('weekly_report')
 
 

@@ -1,28 +1,77 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weekly Report</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: rgb(204, 231, 253);
+            padding: 20px; 
+        }
+
+        .container {
+            border: 1px solid #ccc; 
+            border-radius: 8px; 
+            padding: 20px;
+            max-width: 600px; 
+            width: 100%; 
+            background-color: rgb(204, 231, 253);
+            margin-top: 3%;
+        }
+
+        .mb-3{
+            margin-right: 10%;
+            margin-left: 10%;
+        }
+        .btn{
+            margin-left: 10%;
+        }
+    </style>
 </head>
 <body>
-    <h1>Generate Weekly Report</h1>
-    <form method="post">
-        {% csrf_token %}
-        <label for="year">Select Year:</label>
-        <select name="year" id="year">
-            {% regroup week_date_ranges by year as year_list %}
-            {% for year_entry in year_list %}
-                <option value="{{ year_entry.grouper }}">{{ year_entry.grouper }}</option>
-            {% endfor %}
-        </select><br><br>
+    <div class="container">
+        <h1>Generate Weekly Report</h1>
+        <form method="post" action="{% url 'weekly_report' %}">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="generate_report">
+            <div class="mb-3">
+                <label for="year" class="form-label">Select Year:</label>
+                <select class="form-select" name="year" id="year">
+                    {% regroup week_date_ranges by year as year_list %}
+                    {% for year_entry in year_list %}
+                        <option value="{{ year_entry.grouper }}">{{ year_entry.grouper }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="week_number" class="form-label">Select Week Number:</label>
+                <select class="form-select" name="week_number" id="week_number">
+                    {% for week_date_range in week_date_ranges %}
+                        <option value="{{ week_date_range.week_number }}">Week {{ week_date_range.week_number }} of {{ week_date_range.year }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Generate Weekly Report</button>
+        </form>
+        
+        <br><br>
+        
+        <h1>Process Weekly Report</h1>
+        <form method="post" action="{% url 'weekly_report' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="process_report">
+            <div class="mb-3">
+                <label for="file" class="form-label">Upload CSV File:</label>
+                <input type="file" class="form-control" name="file" id="file" accept=".csv">
+            </div>
+            <button type="submit" class="btn btn-primary">Process Weekly Report</button>
+        </form>
+    </div>
 
-        <label for="week_number">Select Week Number:</label>
-        <select name="week_number" id="week_number">
-            {% for week_date_range in week_date_ranges %}
-                <option value="{{ week_date_range.week_number }}">Week {{ week_date_range.week_number }} of {{ week_date_range.year }}</option>
-            {% endfor %}
-        </select><br><br>
-
-        <button type="submit">Generate Weekly Report</button>
-    </form>
+    <!-- Bootstrap JS (Optional - if you need Bootstrap's JavaScript features) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

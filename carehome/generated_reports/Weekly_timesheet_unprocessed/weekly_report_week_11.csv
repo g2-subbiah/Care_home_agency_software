@@ -1,0 +1,4 @@
+user,date_of_work,shift_started_time,break_started_time,break_finished_time,shift_finished_time,client_rep_name,client_rep_position
+Staff A Careworker,2024-06-14,2024-06-14 08:00:00+00:00,13:00:00,14:00:00,2024-06-14 20:00:00+00:00,sf,Rgn
+Staff B Careworker,2024-06-11,2024-06-11 20:00:00+00:00,00:00:00,01:00:00,2024-06-12 08:00:00+00:00,sf,Rgn
+Staff C Careworker,2024-06-15,2024-06-15 20:00:00+00:00,01:00:00,02:00:00,2024-06-16 08:00:00+00:00,sf,Rgn

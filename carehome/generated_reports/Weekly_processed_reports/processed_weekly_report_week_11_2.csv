@@ -1,0 +1,4 @@
+Serial Number,staff_name,date_of_work,shift_started_time,shift_finished_time,working_hours,Day,Rate
+1,Staff B Careworker,2024-06-10,08:00,20:00,12.0,Monday,12.0
+2,Staff B Careworker,2024-06-10,08:00,20:00,12.0,Monday,12.0
+3,Staff C Careworker,2024-06-16,08:00,20:00,12.0,Sunday,14.5
