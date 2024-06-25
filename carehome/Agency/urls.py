@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
 from staff.views import create_weeks_table_view
-from .views import WeeklyReportView, ClearTimeSheetsView
+from .views import WeeklyReportView, ClearTimeSheetsView, PayDetailProcessView
 
 
 
@@ -17,5 +17,6 @@ urlpatterns = [
     path('agencyfrontpage/client_register/', views.register_client, name='client_register'),
     path('agencyfrontpage/weekly_report/', WeeklyReportView.as_view(), name='weekly_report'),
     path('clear-timesheets/', ClearTimeSheetsView.as_view(), name='clear_timesheets'),
+    path('agencyfrontpage/pay_detail/', PayDetailProcessView.as_view(), name='pay_detail'),
 
 ]

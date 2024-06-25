@@ -24,6 +24,7 @@ from django.shortcuts import render, redirect
 from .models import *
 from .forms import *
 from .weekly_processed_report import WeeklyReportView, ClearTimeSheetsView
+from .pay_detail import PayDetailProcessView
 
 # Your other view functions here...
 
