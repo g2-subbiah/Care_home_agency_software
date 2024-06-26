@@ -69,7 +69,7 @@ def submit_timesheet(request):
         form = TimeSheetForm(request.POST, request.FILES)
         if form.is_valid():
             timesheet = form.save(commit=False)
-            timesheet.user = request.user  # Set the logged-in user
+            timesheet.user = request.user  
             timesheet.save()
 
             return redirect('success-page')
@@ -108,17 +108,14 @@ def retrieve_timesheets_for_week(request, year, week_number):
 
 def create_weeks_table_view(request, year):
     if request.method == 'POST':
-        # Call the management command to populate WeekDateRange table
         try:
             call_command('populate_weeks', str(year), str(year + 1))
             messages.success(request, f'Successfully created weeks for {year}-{year + 1}')
         except Exception as e:
             messages.error(request, f'Failed to create weeks: {str(e)}')
         
-        # Redirect back to some page or render a template as needed
-        return redirect('success_weekcreation')  # Replace with the appropriate URL name or path
+        return redirect('success_weekcreation')  
     
-    # Render a template with a button to trigger the creation of weeks
     context = {
         'year': year,
     }

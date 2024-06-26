@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timesheet View</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: rgb(204, 231, 253);
+            padding: 20px; 
+        }
+
+        .container {
+            border: 1px solid #ccc; 
+            border-radius: 8px; 
+            padding: 20px;
+            max-width: 800px; 
+            width: 100%; 
+            background-color: rgb(204, 231, 253);
+            margin-top: 3%;
+        }
+
+        .mb-3 {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Timesheet View</h1>
+
+        <!-- Form for Weekly Timesheet Report -->
+        <form method="post" action="{% url 'timesheets_view' %}" class="mb-4">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="generate_weekly_report">
+            <h3>Select Week for Weekly Timesheet Report</h3>
+            <div class="mb-3">
+                <label for="year_weekly" class="form-label">Select Year:</label>
+                <select id="year_weekly" name="year" class="form-select">
+                    {% for year in years %}
+                        <option value="{{ year }}">{{ year }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="week_number_weekly" class="form-label">Select Week Number:</label>
+                <select id="week_number_weekly" name="week_number" class="form-select">
+                    {% for week_date_range in week_date_ranges %}
+                        <option value="{{ week_date_range.week_number }}">Week {{ week_date_range.week_number }} of {{ week_date_range.year }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Generate Weekly Timesheet Report</button>
+        </form>
+
+        <!-- Form for Monthly Timesheet Report -->
+        <form method="post" action="{% url 'timesheets_view' %}" class="mb-4">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="generate_monthly_report">
+            <h3>Select Month for Monthly Timesheet Report</h3>
+            <div class="mb-3">
+                <label for="year_monthly" class="form-label">Year:</label>
+                <select id="year_monthly" name="year" class="form-select">
+                    {% for year in years %}
+                        <option value="{{ year }}">{{ year }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="month_number_monthly" class="form-label">Month:</label>
+                <select id="month_number_monthly" name="month_number" class="form-select">
+                    {% for month_number, month_name in months.items %}
+                        <option value="{{ month_number }}">{{ month_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Generate Monthly Timesheet Report</button>
+        </form>
+
+        <!-- Displaying Generated Report -->
+        {% if report_url %}
+            <h3>View Generated Report</h3>
+            <a href="{{ report_url }}" target="_blank" class="btn btn-secondary">View Generated Report</a>
+        {% endif %}
+
+        <!-- Link to View Weekly Timesheet Report -->
+        {% if report_url %}
+            <h3>View Weekly Timesheet Report</h3>
+            <a href="{% url 'timesheets_view:weekly_timesheets_view' %}" class="btn btn-secondary">View Weekly Timesheet Report</a>
+        {% endif %}
+
+        <!-- Link to View Monthly Timesheet Report -->
+        {% if report_url %}
+            <h3>View Monthly Timesheet Report</h3>
+            <a href="{% url 'monthly_timesheets' %}" class="btn btn-secondary">View Monthly Timesheet Report</a>
+        {% endif %}
+    </div>
+
+    <!-- Bootstrap JS (optional, for Bootstrap features) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

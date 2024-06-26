@@ -82,7 +82,6 @@ class WeeklyReportView(View):
                         'care_home_name': care_home_first_name
                     })
 
-            timesheets.delete()
 
             return HttpResponse(f'Success! CSV file generated and saved at {file_path}')
         
@@ -198,13 +197,3 @@ class WeeklyReportView(View):
         return df
 
 
-class ClearTimeSheetsView(View):
-    def post(self, request):
-        start_date = request.POST.get('start_date')
-        end_date = request.POST.get('end_date')
-
-        try:
-            TimeSheet.objects.filter(date_of_work__range=[start_date, end_date]).delete()
-            return redirect('weekly_report')
-        except Exception as e:
-            return redirect('weekly_report')

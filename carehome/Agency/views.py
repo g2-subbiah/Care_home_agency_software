@@ -23,14 +23,10 @@ from django.conf import settings
 from django.shortcuts import render, redirect
 from .models import *
 from .forms import *
-from .weekly_processed_report import WeeklyReportView, ClearTimeSheetsView
+from .weekly_processed_report import WeeklyReportView
+from .invoice import ClearTimeSheetsView, MonthlyReportView
 from .pay_detail import PayDetailProcessView
-
-# Your other view functions here...
-
-
-
-
+from .timesheet_view import TimesheetView, weekly_timesheets_view, monthly_timesheets_view
 from .models import CustomUser
 from django.contrib.auth import get_user_model, logout
 

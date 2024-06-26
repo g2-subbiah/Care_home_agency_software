@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import os
+import pdfkit
+
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -97,8 +100,8 @@ DATABASES = {
         'NAME': 'carehomeapp',
         'USER': 'root',
         'PASSWORD': 'Database@123',
-        'HOST': 'localhost',  # 'localhost' if the database is on the same machine
-        'PORT': '3306'  # Usually '3306' for MySQL
+        'HOST': 'localhost',  
+        'PORT': '3306'  
 }
 }
 
@@ -149,6 +152,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # settings.py
 AUTH_USER_MODEL = 'Agency.CustomUser'
-#AUTH_USER_MODEL = 'staff.CustomUser'
+
+WKHTMLTOPDF_PATH = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'  
+
+# Configuration for pdfkit
+PDFKIT_CONFIG = pdfkit.configuration(wkhtmltopdf=WKHTMLTOPDF_PATH)
 
 

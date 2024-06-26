@@ -63,7 +63,7 @@ h2{
 
 .backbutton {
     margin-left: 90%; 
-    margin-bottom: -9%; /* Further reduce space between back button and container */
+    margin-bottom: -9%; 
 }
 .titlecontents img {
     max-width: 100%;
