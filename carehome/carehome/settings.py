@@ -24,6 +24,9 @@ GENERATED_REPORTS_DIR = os.path.join(BASE_DIR, 'generated_reports')
 
 os.makedirs(GENERATED_REPORTS_DIR, exist_ok=True)
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 
 print (BASE_DIR)
 # Quick-start development settings - unsuitable for production

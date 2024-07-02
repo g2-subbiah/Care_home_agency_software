@@ -20,6 +20,9 @@ from django.urls import reverse
 from django.utils.timezone import now
 from django.contrib import messages
 from django.core.management import call_command
+import base64
+from django.core.files.base import ContentFile
+
 
 #from .create_week import CreateWeeksTableView
 
@@ -63,6 +66,12 @@ def staff_front(request):
     }
     return render(request, "staff/stafffrontpage.html", context)
 
+def save_base64_image(data, filename_prefix):
+    # Decode the base64 image data
+    format, imgstr = data.split(';base64,')
+    ext = format.split('/')[-1]
+    file_name = f'{filename_prefix}_{datetime.now().strftime("%Y%m%d%H%M%S")}.{ext}'
+    return ContentFile(base64.b64decode(imgstr), name=file_name)
 
 CustomUser = get_user_model()
 
@@ -79,6 +88,18 @@ def submit_timesheet(request):
             care_home = CustomUser.objects.get(id=request.POST.get('care_home_id'))
             timesheet.care_home_id = care_home
             timesheet.care_home_name = care_home.first_name
+
+            staff_signature_data = request.POST.get('staff_signature_image')
+            if staff_signature_data:
+                staff_signature_image = save_base64_image(staff_signature_data, 'staff_signature')
+                timesheet.staff_signature_image = staff_signature_image
+
+            # Decode and save client rep signature image
+            client_rep_signature_data = request.POST.get('client_rep_signature_image')
+            if client_rep_signature_data:
+                client_rep_signature_image = save_base64_image(client_rep_signature_data, 'client_rep_signature')
+                timesheet.client_rep_signature_image = client_rep_signature_image
+
 
             timesheet.save()
             return redirect('success-page')
