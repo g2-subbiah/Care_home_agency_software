@@ -52,6 +52,14 @@
                     {% endfor %}
                 </select>
             </div>
+            <div class="mb-3">
+                <label for="staff_name_weekly" class="form-label">Select Staff Name:</label>
+                <select id="staff_name_weekly" name="staff_name" class="form-select">
+                    {% for staff_name in staff_names %}
+                        <option value="{{ staff_name }}">{{ staff_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
             <button type="submit" class="btn btn-primary">Generate Weekly Timesheet Report</button>
         </form>
 
@@ -76,6 +84,14 @@
                     {% endfor %}
                 </select>
             </div>
+            <div class="mb-3">
+                <label for="care_home_name" class="form-label">Select Care Home Name:</label>
+                <select id="care_home_name" name="care_home_name" class="form-select">
+                    {% for client_username in client_usernames %}
+                        <option value="{{ client_username }}">{{ client_username }}</option>
+                    {% endfor %}
+                </select>
+            </div>
             <button type="submit" class="btn btn-primary">Generate Monthly Timesheet Report</button>
         </form>
 
@@ -86,13 +102,13 @@
         {% endif %}
 
         <!-- Link to View Weekly Timesheet Report -->
-        {% if report_url %}
+        {% if week_timesheet_url %}
             <h3>View Weekly Timesheet Report</h3>
-            <a href="{% url 'timesheets_view:weekly_timesheets_view' %}" class="btn btn-secondary">View Weekly Timesheet Report</a>
+            <a href="{% url 'weekly_timesheets' %}" class="btn btn-secondary">View Weekly Timesheet Report</a>
         {% endif %}
 
         <!-- Link to View Monthly Timesheet Report -->
-        {% if report_url %}
+        {% if month_timesheet_url %}
             <h3>View Monthly Timesheet Report</h3>
             <a href="{% url 'monthly_timesheets' %}" class="btn btn-secondary">View Monthly Timesheet Report</a>
         {% endif %}

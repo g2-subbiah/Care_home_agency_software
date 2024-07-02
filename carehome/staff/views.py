@@ -8,7 +8,7 @@ from Agency.models import CustomUser
 from django.contrib.auth import logout
 from Agency.backends import GroupBasedBackend
 from django.contrib.auth.forms import PasswordChangeForm
-from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth import update_session_auth_hash, get_user_model
 from django.contrib.auth.decorators import login_required
 from .forms import TimeSheetForm
 from client.views import clientlogin
@@ -20,6 +20,8 @@ from django.urls import reverse
 from django.utils.timezone import now
 from django.contrib import messages
 from django.core.management import call_command
+
+#from .create_week import CreateWeeksTableView
 
 def stafflogin(request):
     if request.method == 'POST':
@@ -62,6 +64,7 @@ def staff_front(request):
     return render(request, "staff/stafffrontpage.html", context)
 
 
+CustomUser = get_user_model()
 
 @login_required
 def submit_timesheet(request):
@@ -69,17 +72,41 @@ def submit_timesheet(request):
         form = TimeSheetForm(request.POST, request.FILES)
         if form.is_valid():
             timesheet = form.save(commit=False)
-            timesheet.user = request.user  
-            timesheet.save()
+            timesheet.user = request.user
+            timesheet.staff_name = f"{request.user.first_name} {request.user.last_name}"
 
+            # Retrieve the care_home instance
+            care_home = CustomUser.objects.get(id=request.POST.get('care_home_id'))
+            timesheet.care_home_id = care_home
+            timesheet.care_home_name = care_home.first_name
+
+            timesheet.save()
             return redirect('success-page')
         else:
-            print(form.errors)
+            print(form.errors)  # Debug: print form errors to the console
             return HttpResponseBadRequest("Form data is invalid.")
     else:
         form = TimeSheetForm()
 
     return render(request, 'staff/timesheet.html', {'form': form})
+
+# @login_required
+# def submit_timesheet(request):
+#     if request.method == 'POST':
+#         form = TimeSheetForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             timesheet = form.save(commit=False)
+#             timesheet.user = request.user  
+#             timesheet.save()
+
+#             return redirect('success-page')
+#         else:
+#             print(form.errors)
+#             return HttpResponseBadRequest("Form data is invalid.")
+#     else:
+#         form = TimeSheetForm()
+
+#     return render(request, 'staff/timesheet.html', {'form': form})
 
 
 def success_page(request):

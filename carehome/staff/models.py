@@ -5,7 +5,9 @@ from django.conf import settings
 
 class TimeSheet(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    care_home_name = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='timesheets', on_delete=models.CASCADE)
+    staff_name = models.CharField(max_length=100)  
+    care_home_id = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='timesheets', on_delete=models.CASCADE)
+    care_home_name = models.CharField(max_length=100)
     date_of_work = models.DateField()
     shift_started_time = models.DateTimeField()
     break_started_time = models.TimeField()
@@ -15,10 +17,10 @@ class TimeSheet(models.Model):
     client_rep_position = models.CharField(max_length=100)
     staff_signature_image = models.ImageField(upload_to='staff_signatures/', null=True, blank=True)
     client_rep_signature_image = models.ImageField(upload_to='client_rep_signatures/', null=True, blank=True)
-
+    
     def __str__(self):
-        return f"{self.user.first_name} {self.user.last_name} - {self.date_of_work}"
-
+        return f"TimeSheet for {self.staff_name} on {self.date_of_work}"
+    
 class WeekDateRange(models.Model):
     year = models.IntegerField()
     week_number = models.IntegerField()

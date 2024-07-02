@@ -9,6 +9,8 @@ from django.views import View
 from staff.models import TimeSheet
 import pandas as pd
 import calendar
+from django.contrib import messages
+
 
 class MonthlyReportView(View):
     template_name = 'agency/invoice.html'
@@ -32,8 +34,8 @@ class MonthlyReportView(View):
             return self.generate_report(request)
         elif action == 'process_report':
             return self.process_report(request)
-        elif action == 'clear_timesheets':
-            return self.clear_timesheets(request)
+        # elif action == 'clear_timesheets':
+        #     return self.clear_timesheets(request)
 
     def convert_times(self, df, start_col, end_col):
         df[start_col] = pd.to_datetime(df[start_col]).dt.strftime('%H:%M')
@@ -130,17 +132,44 @@ class MonthlyReportView(View):
             return HttpResponse(f'Error generating report: {e}', status=500)
 
     def process_report(self, request):
-        try:
-            file = request.FILES['file']
-            file_path = os.path.join(settings.GENERATED_REPORTS_DIR, 'Monthly_timesheet_unprocessed', file.name)
-            
-            # Saving the uploaded file
-            with open(file_path, 'wb+') as destination:
-                for chunk in file.chunks():
-                    destination.write(chunk)
+        year = int(request.POST.get('year'))
+        month_number = int(request.POST.get('month_number'))
 
+        start_date, end_date = self.get_month_date_range(year, month_number)
+        timesheets = TimeSheet.objects.filter(
+            date_of_work__gte=start_date,
+            date_of_work__lte=end_date
+        ).order_by('care_home_name', 'date_of_work')  # Ordered by care_home_name and date_of_work
+
+        base_file_name = f"monthly_report_{year}_{month_number}.csv"
+        generated_reports_dir = settings.GENERATED_REPORTS_DIR
+        file_path = os.path.join(generated_reports_dir, 'Monthly_timesheet_unprocessed', base_file_name)
+
+        # Finding the correct file path
+        counter = 1
+        while not os.path.exists(file_path) and counter < 100:
+            file_path = os.path.join(generated_reports_dir, 'Monthly_timesheet_unprocessed', f"monthly_report_{year}_{month_number}_{counter}.csv")
+            counter += 1
+
+        if not os.path.exists(file_path):
+            return HttpResponseBadRequest('Generated report file not found.')
+
+        try:
             # Reading the CSV file into a pandas DataFrame
             df = pd.read_csv(file_path)
+
+
+        # try:
+        #     file = request.FILES['file']
+        #     file_path = os.path.join(settings.GENERATED_REPORTS_DIR, 'Monthly_timesheet_unprocessed', file.name)
+            
+        #     # Saving the uploaded file
+        #     with open(file_path, 'wb+') as destination:
+        #         for chunk in file.chunks():
+        #             destination.write(chunk)
+
+        #     # Reading the CSV file into a pandas DataFrame
+        #     df = pd.read_csv(file_path)
 
             # Correctly calling the convert_times method using self
             df = self.convert_times(df, 'shift_started_time', 'shift_finished_time')
@@ -196,7 +225,8 @@ class MonthlyReportView(View):
                 print(f"Error creating directory: {e}")
 
             # Saving processed DataFrame back to CSV
-            output_path = os.path.join(generated_reports_dir, 'processed_invoice', 'invoice_' + file.name)
+            output_file = f"invoice_{year}_{month_number}_{counter}.csv"
+            output_path = os.path.join(generated_reports_dir, 'processed_invoice', output_file)
             final_output.to_csv(output_path, index=False)
 
             # output_path_pdf = os.path.join(generated_reports_dir, 'processed_invoice', 'invoice_' + os.path.splitext(file.name)[0] + '.pdf')
@@ -215,7 +245,33 @@ class MonthlyReportView(View):
             return HttpResponseBadRequest(f'Error processing file: {str(e)}')
 
 
+# class ClearTimeSheetsView(View):
+
+
+#     template_name = 'agency/clear_timesheets.html'
+
+#     def post(self, request):
+#         year = int(request.POST.get('year'))
+#         month_number = int(request.POST.get('month_number'))
+
+#         start_date, end_date = self.get_month_date_range(year, month_number)
+
+#         try:
+#             TimeSheet.objects.filter(date_of_work__range=[start_date, end_date]).delete()
+#             return redirect('invoice')  
+#         except Exception as e:
+#             return redirect('invoice')  
+
+#     def get_month_date_range(self, year, month):
+#         start_date = datetime(year, month, 1)
+#         _, last_day = calendar.monthrange(year, month)
+#         end_date = datetime(year, month, last_day)
+#         return start_date, end_date
+
+
 class ClearTimeSheetsView(View):
+    template_name = 'agency/clear_timesheets.html'
+
     def post(self, request):
         year = int(request.POST.get('year'))
         month_number = int(request.POST.get('month_number'))
@@ -223,13 +279,27 @@ class ClearTimeSheetsView(View):
         start_date, end_date = self.get_month_date_range(year, month_number)
 
         try:
+            # Delete the timesheets within the specified date range
             TimeSheet.objects.filter(date_of_work__range=[start_date, end_date]).delete()
-            return redirect('invoice')  
+            messages.success(request, 'Timesheets cleared successfully.')
         except Exception as e:
-            return redirect('invoice')  
+            # Log the error and notify the user
+            messages.error(request, f'Error clearing timesheets: {str(e)}')
+
+        return redirect('clear_timesheets')
 
     def get_month_date_range(self, year, month):
         start_date = datetime(year, month, 1)
         _, last_day = calendar.monthrange(year, month)
         end_date = datetime(year, month, last_day)
         return start_date, end_date
+
+    def get(self, request):
+        context = {
+            'years': range(2024, datetime.now().year + 1),
+            'months': {
+                1: 'January', 2: 'February', 3: 'March', 4: 'April', 5: 'May', 6: 'June',
+                7: 'July', 8: 'August', 9: 'September', 10: 'October', 11: 'November', 12: 'December'
+            }
+        }
+        return render(request, self.template_name, context)

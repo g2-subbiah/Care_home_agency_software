@@ -3,37 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Invoice Generation</title>
+    <title>Clear Timesheets</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
             background-color: rgb(204, 231, 253);
-            padding: 20px; 
+            padding: 20px;
         }
 
         .container {
-            border: 1px solid #a8a0a0; 
-            border-radius: 8px; 
+            border: 1px solid #a8a0a0;
+            border-radius: 8px;
             padding: 20px;
-            max-width: 600px; 
-            width: 100%; 
+            max-width: 600px;
+            width: 100%;
             background-color: rgb(204, 231, 253);
-            margin-top: 1%;
+            margin-top: 9%;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
 
         .btn-group {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             flex-wrap: wrap; /* Allow buttons to wrap */
         }
 
         .btn {
-            width: 100%; 
-            margin-bottom: 10px; 
-            margin-left: 20%;
-            margin-right: 20%;
+            width: 100%;
+            margin-bottom: 10px;
+            margin-left: 30%;
+            margin-right: 25%;
         }
 
         .mb-3 {
@@ -50,15 +50,51 @@
         .mb-3 select {
             flex: 1;
         }
+
+        .backbutton {
+            margin-left: 90%;
+            margin-right: 5%;
+            margin-top: 5%;
+        }
     </style>
+    <script type="text/javascript">
+        function confirmClearTimesheets(event) {
+            var year = document.getElementById("year_generate").value;
+            var month = document.getElementById("month_number_generate").value;
+            var monthNames = ["January", "February", "March", "April", "May", "June",
+                              "July", "August", "September", "October", "November", "December"];
+            var monthName = monthNames[month - 1];
+            var confirmation = confirm(`Are you sure you want to clear all the timesheets for the month of ${monthName} ${year} from the main database?`);
+            if (!confirmation) {
+                event.preventDefault();
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            var form = document.querySelector("form");
+            form.addEventListener("submit", confirmClearTimesheets);
+        });
+    </script>
 </head>
 <body>
-    <div class="container">     
-        <h1 class="mb-4 text-center">Invoice Generation</h1>
 
-        <!-- Year and Month Selection -->
-        <form method="post" action="{% url 'invoice' %}" enctype="multipart/form-data" class="mb-4">
+    <div class="container">
+        <h1 class="mb-4 text-center">Clear Timesheets</h1>
+
+        {% if messages %}
+            <div class="alert alert-info">
+                <ul>
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
+        <form method="post">
             {% csrf_token %}
+            
+            <br>
             
             <div class="mb-3">
                 <label for="year_generate" class="form-label">Year:</label>
@@ -77,31 +113,17 @@
                     {% endfor %}
                 </select>
             </div><br>
-
+            
             <div class="btn-group">
-                <!-- Generate Report Button -->
-                <button type="submit" class="btn btn-primary" name="action" value="generate_report">Generate Report</button>
+                <button type="submit" class="btn btn-danger">Clear Timesheets</button>
             </div>
-            <br>
-
-            <div>
-                <input type="hidden" name="year" value="{{ selected_year }}">
-                <input type="hidden" name="month_number" value="{{ selected_month }}">
-                <!-- Process Report Button -->
-                <div class="btn-group">
-                    <button type="submit" class="btn btn-success" name="action" value="process_report">Process Report</button>
-                </div>
-            </div>
-
-        </form><br>
-
-      
+        </form>
     </div><br>
 
-    <div class="backbutton text-center mb-4" style="margin-left: 90%; margin-right: 5%; margin-top: -1%;">
+    <div class="backbutton text-center mb-4">
         <a href="{% url 'agency-front' %}">
             <button type="button" class="btn btn-secondary">Back</button>
-        </a>    
+        </a>
     </div>    
 
     <!-- Bootstrap JS (Optional - if you need Bootstrap's JavaScript features) -->

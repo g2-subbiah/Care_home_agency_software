@@ -4,7 +4,6 @@ from django.http import HttpResponse
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth.forms import AuthenticationForm
 from .backends import GroupBasedBackend
-from django.shortcuts import render, redirect
 from django.contrib.auth.models import Group
 from .forms import UserRegistrationForm, ClientRegistrationForm
 from django.utils.timezone import now
@@ -15,18 +14,15 @@ from django.urls import reverse
 from django.utils.timezone import make_aware
 from staff.models import WeekDateRange, TimeSheet
 from datetime import timedelta
-from staff.models import TimeSheet
 import csv
 import os
 from django.views.generic import View
 from django.conf import settings  
-from django.shortcuts import render, redirect
 from .models import *
 from .forms import *
 from .weekly_processed_report import WeeklyReportView
 from .invoice import ClearTimeSheetsView, MonthlyReportView
-from .pay_detail import PayDetailProcessView
-from .timesheet_view import TimesheetView, weekly_timesheets_view, monthly_timesheets_view
+from .timesheet_view import TimesheetTableView, WeeklyTimesheetsView, MonthlyTimesheetsView
 from .models import CustomUser
 from django.contrib.auth import get_user_model, logout
 

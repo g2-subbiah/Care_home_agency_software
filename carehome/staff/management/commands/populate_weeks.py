@@ -82,3 +82,4 @@ class Command(BaseCommand):
             )
         
         self.stdout.write(self.style.SUCCESS(f'Successfully populated WeekDateRange table for {start_year}-{end_year}'))
+
