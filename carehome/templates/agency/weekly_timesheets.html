@@ -19,18 +19,32 @@
             max-width: 100%; 
             width: 100%; 
             background-color: rgb(204, 231, 253);
-            margin-top: 2%;
+            margin-top: 1%;
         }
 
         .mb-3 {
             margin-bottom: 20px;
         }
+
+        .backbutton {
+            margin-left: 90%;
+            margin-right: 5%;
+            margin-top: 1%;
+        }
+
     </style>
 </head>
 <body>
+    <div class="backbutton text-center mb-4">
+        <a href="{% url 'timesheets_view' %}">
+            <button type="button" class="btn btn-secondary">Back</button>
+        </a>
+    </div>    
+
     <div class="container">
         <h1>Weekly Timesheet Report</h1>
-        <h3>Week {{ week_number }} of {{ year }} for {{ staff_name }}</h3>
+        <h3 id="report-title"> {{ week_range }} for {{ staff_name }}</h3>
+
         
         <table class="table table-striped">
             <thead>
@@ -84,8 +98,48 @@
                 {% endfor %}
             </tbody>
         </table>
+    </div><br>
+    <div class="d-flex justify-content-center">
+        <button id="download-btn" class="btn btn-primary mb-3" style="margin-top: 1%;">Download Table as Image</button>
     </div>
+
+    
+    
     <!-- Bootstrap JS (optional, for Bootstrap features) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script>
+        document.getElementById('download-btn').addEventListener('click', function() {
+            const downloadButton = document.getElementById('download-btn');
+            downloadButton.style.display = 'none';  // Hide the download button
+
+            // Get the week_range and staff_name from the content
+            const reportTitle = document.getElementById('report-title').textContent;
+            const match = reportTitle.match(/Week (.*) for (.*)/);
+            const week_range = match[1].trim();
+            const staff_name = match[2].trim();
+
+            html2canvas(document.querySelector('.container')).then(canvas => {
+                // Create a link element
+                let link = document.createElement('a');
+                link.download = `timesheet_${week_range}_${staff_name}.png`;
+
+                // Convert the canvas to a data URL and set it as the href attribute
+                link.href = canvas.toDataURL();
+
+                // Append the link to the body
+                document.body.appendChild(link);
+
+                // Programmatically click the link to trigger the download
+                link.click();
+
+                // Remove the link from the document
+                document.body.removeChild(link);
+
+                // Show the download button again
+                downloadButton.style.display = 'block';
+            });
+        });
+    </script>
 </body>
 </html>

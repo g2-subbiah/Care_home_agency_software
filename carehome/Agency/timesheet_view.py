@@ -84,6 +84,7 @@ class TimesheetTableView(View):
         context = {
             'timesheets': timesheets,
             'week_range': f"Week {week_number} of {year}-{year+1}",
+            'staff_name' : staff_name
         }
         return render(request, 'agency/weekly_timesheets.html', context)
 
@@ -126,6 +127,7 @@ class TimesheetTableView(View):
         context = {
             'timesheets': timesheets,
             'month_range': f"{calendar.month_name[month_number]} {year}",
+            'care_home_name':care_home_name
         }
         return render(request, 'agency/monthly_timesheets.html', context)
 
