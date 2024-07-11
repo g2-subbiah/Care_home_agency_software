@@ -22,6 +22,10 @@ from django.contrib import messages
 from django.core.management import call_command
 import base64
 from django.core.files.base import ContentFile
+from .availability import SubmitAvailabilityView
+from django.views.generic import View
+from Agency.views import StaffWeeklyTimesheetsView
+from .download_payslip import download_payslip
 
 
 #from .create_week import CreateWeeksTableView
@@ -111,24 +115,6 @@ def submit_timesheet(request):
 
     return render(request, 'staff/timesheet.html', {'form': form})
 
-# @login_required
-# def submit_timesheet(request):
-#     if request.method == 'POST':
-#         form = TimeSheetForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             timesheet = form.save(commit=False)
-#             timesheet.user = request.user  
-#             timesheet.save()
-
-#             return redirect('success-page')
-#         else:
-#             print(form.errors)
-#             return HttpResponseBadRequest("Form data is invalid.")
-#     else:
-#         form = TimeSheetForm()
-
-#     return render(request, 'staff/timesheet.html', {'form': form})
-
 
 def success_page(request):
     return render(request, 'staff/success_timesheet.html')
@@ -169,6 +155,12 @@ def create_weeks_table_view(request, year):
     }
     return render(request, 'agency/create_weeks.html', context)
 
+
+class SuccessAvailabilityView(View):
+    template_name = 'staff/success_availability.html'
+
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name)
 
 
 

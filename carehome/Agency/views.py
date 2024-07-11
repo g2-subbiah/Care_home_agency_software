@@ -22,9 +22,11 @@ from .models import *
 from .forms import *
 from .weekly_processed_report import WeeklyReportView
 from .invoice import ClearTimeSheetsView, MonthlyReportView
-from .timesheet_view import TimesheetTableView, WeeklyTimesheetsView, MonthlyTimesheetsView
+from .timesheet_view import TimesheetTableView, WeeklyTimesheetsView, MonthlyTimesheetsView, StaffWeeklyTimesheetsView
 from .models import CustomUser
 from django.contrib.auth import get_user_model, logout
+from .payslips import upload_payslip
+from .allotments import match_staff
 
 User = get_user_model()
 

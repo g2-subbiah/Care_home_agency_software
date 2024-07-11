@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weekly Timesheet Report</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: rgb(204, 231, 253);
+            padding: 20px; 
+        }
+
+        .container {
+            border: 1px solid #ccc; 
+            border-radius: 2%; 
+            padding: 2%;
+            max-width: 100%; 
+            width: 100%; 
+            background-color: rgb(204, 231, 253);
+            margin-top: 1%;
+        }
+
+        .mb-3 {
+            margin-bottom: 20px;
+        }
+
+        .backbutton {
+            margin-left: 90%;
+            margin-right: 5%;
+            margin-top: 1%;
+        }
+
+        .print-only {
+            display: none;
+        }
+
+        @media print {
+            .print-only {
+                display: block !important;
+            }
+            .non-printable {
+                display: none;
+            }
+
+            body {
+                margin: 10mm 10mm; 
+            }
+
+            .container {
+                margin: 0; 
+            }
+
+            table {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="backbutton text-center mb-4">
+        <a href="{% url 'staff-front' %}">
+            <button type="button" class="btn btn-secondary">Back</button>
+        </a>
+    </div>    
+
+    <div class="container">
+        <h1>Weekly Timesheets for {{ staff_name }} </h1>
+        
+        <!-- Form for Weekly Timesheet Report -->
+        <form id="timesheetForm" method="post" action="{% url 'staff_weekly_timesheets' %}" class="mb-4 non-printable">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="generate_weekly_report">
+            <h3>Select Week for Weekly Timesheet Report</h3>
+            <div class="mb-3">
+                <label for="year" class="form-label">Select Year:</label>
+                <select id="year" name="year" class="form-select">
+                    {% for year_value in years %}
+                        <option value="{{ year_value }}"
+                                {% if year_value == selected_year %} selected {% endif %}>
+                            {{ year_value }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="week_number" class="form-label">Select Week Number:</label>
+                <select id="week_number" name="week_number" class="form-select">
+                    {% for week_date_range in week_date_ranges %}
+                        <option value="{{ week_date_range.week_number }}"
+                                {% if week_date_range.week_number == selected_week %} selected {% endif %}>
+                            Week {{ week_date_range.week_number }} of {{ week_date_range.year }} - {{ week_date_range.year|add:"1" }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Generate Weekly Timesheet Report</button>
+            <button type="button" class="btn btn-secondary ms-2" onclick="resetAndNavigate()">Reset</button>
+        </form>
+
+        {% if form_submitted %}
+            <div id="timesheetReport">
+                {% if timesheets %}
+                    <h2>{{ week_range }} for {{staff_name}}</h2>
+                    <table class="table table-striped mt-4">
+                        <thead>
+                            <tr>
+                                <th>Staff Name</th>
+                                <th>Care Home Name</th>
+                                <th>Date of Work</th>
+                                <th>Shift Started Time</th>
+                                <th>Break Started Time</th>
+                                <th>Break Finished Time</th>
+                                <th>Shift Finished Time</th>
+                                <th>Total Worked Hours</th>
+                                <th>Client Representative Name</th>
+                                <th>Client Representative Position</th>
+                                <th>Staff Signature</th>
+                                <th>Client Rep Signature</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for timesheet in timesheets %}
+                                <tr>
+                                    <td>{{ timesheet.user.first_name }} {{ timesheet.user.last_name }}</td>
+                                    <td>{{ timesheet.care_home_name }}</td>
+                                    <td>{{ timesheet.date_of_work }}</td>
+                                    <td>{{ timesheet.shift_started_time }}</td>
+                                    <td>{{ timesheet.break_started_time }}</td>
+                                    <td>{{ timesheet.break_finished_time }}</td>
+                                    <td>{{ timesheet.shift_finished_time }}</td>
+                                    <td>{{ timesheet.total_worked_hours }}</td>
+                                    <td>{{ timesheet.client_rep_name }}</td>
+                                    <td>{{ timesheet.client_rep_position }}</td>
+                                    <td>
+                                        {% if timesheet.staff_signature_image %}
+                                            <img src="{{ timesheet.staff_signature_image.url }}" alt="Staff Signature" style="width: 100px; height: auto;">
+                                        {% else %}
+                                            No Signature
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if timesheet.client_rep_signature_image %}
+                                            <img src="{{ timesheet.client_rep_signature_image.url }}" alt="Client Rep Signature" style="width: 100px; height: auto;">
+                                        {% else %}
+                                            No Signature
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p>No timesheets found for selected Week and Year for staff {{ request.user.first_name }}</p>
+                {% endif %}
+            </div>
+        {% endif %}
+
+    </div><br>
+    <div class="d-flex justify-content-center print-only">
+        <button id="download-btn" class="btn btn-primary mb-3" style="margin-top: 1%;">Download Table as Image</button>
+    </div>
+
+    <!-- Bootstrap JS (optional, for Bootstrap features) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script>
+    function resetAndNavigate() {
+        // Reset the form to its initial state
+        document.getElementById('timesheetForm').reset();
+
+        // Navigate back to staff_weekly_timesheets page
+        window.location.href = "{% url 'staff_weekly_timesheets' %}";
+    }
+        document.getElementById('download-btn').addEventListener('click', function() {
+            const downloadButton = document.getElementById('download-btn');
+            downloadButton.style.display = 'none';  // Hide the download button
+
+            // Get the week_range and staff_name from the content
+            const reportTitle = document.querySelector('h1').textContent;
+            const match = reportTitle.match(/Weekly Timesheets for (.*)/);
+            const staff_name = match[1].trim();
+
+            html2canvas(document.getElementById('timesheetReport')).then(canvas => {
+                // Create a link element
+                let link = document.createElement('a');
+                link.download = `timesheet_${staff_name}.png`;
+
+                // Convert the canvas to a data URL and set it as the href attribute
+                link.href = canvas.toDataURL();
+
+                // Append the link to the body
+                document.body.appendChild(link);
+
+                // Programmatically click the link to trigger the download
+                link.click();
+
+                // Remove the link from the document
+                document.body.removeChild(link);
+
+                // Show the download button again
+                downloadButton.style.display = 'block';
+            });
+        });
+    </script>
+</body>
+</html>

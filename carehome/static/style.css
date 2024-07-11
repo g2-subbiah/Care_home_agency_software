@@ -1,6 +1,6 @@
-body{
+/* body{
     background-image: url("{% static 'image/background.png' %}");
-}
+} */
  
 .client-login {
     width: 75%;
@@ -98,7 +98,6 @@ body, html {
 .container {
     height: 100vh;
     margin-top: -80px; /* Further adjust margin-top to reduce space */
-    /* background-color: rgb(118, 175, 222); */
     background-color: rgb(207, 213, 233);
     border-radius: 2%;
 }

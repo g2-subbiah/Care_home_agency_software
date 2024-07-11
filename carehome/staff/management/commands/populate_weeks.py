@@ -2,6 +2,8 @@ from django.utils.timezone import make_aware
 from django.core.management.base import BaseCommand
 from datetime import datetime, timedelta
 from staff.models import WeekDateRange
+from django.core.cache import cache
+cache.clear()
 
 
 def get_start_of_week(date):

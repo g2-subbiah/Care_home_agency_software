@@ -54,11 +54,11 @@ class WeeklyReportView(View):
         generated_reports_dir = settings.GENERATED_REPORTS_DIR
         file_path = os.path.join(generated_reports_dir, 'Weekly_timesheet_unprocessed', base_file_name)
 
-        # Checking if the file already exists, if yes, append a number to make it unique
-        counter = 1
-        while os.path.exists(file_path):
-            file_path = os.path.join(generated_reports_dir, 'Weekly_timesheet_unprocessed', f"weekly_report_week_{week_number}_{counter}.csv")
-            counter += 1
+        # # Checking if the file already exists, if yes, append a number to make it unique
+        # counter = 1
+        # while os.path.exists(file_path):
+        #     file_path = os.path.join(generated_reports_dir, 'Weekly_timesheet_unprocessed', f"weekly_report_week_{week_number}_{counter}.csv")
+        #     counter += 1
 
         try:
             os.makedirs(os.path.join(generated_reports_dir, 'Weekly_timesheet_unprocessed'), exist_ok=True)
@@ -71,7 +71,7 @@ class WeeklyReportView(View):
                 for timesheet in timesheets:
                     # Fetching the care home name's first name
                     care_home_user = timesheet.care_home_name
-                    care_home_first_name = care_home_user.first_name if care_home_user else 'N/A'
+                    care_home_first_name = care_home_user.first_name if hasattr(care_home_user, 'first_name') else care_home_user
                     
                     # Debugging output
                     print(f"Timesheet ID: {timesheet.id}")

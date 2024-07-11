@@ -1,4 +1,0 @@
-timesheet_id,user,date_of_work,shift_started_time,break_started_time,break_finished_time,shift_finished_time,client_rep_name,client_rep_position,care_home_name,staff_signature_image,client_rep_signature_image,total_hours_worked,total_amount
-46,Staff A Careworker,06/05/2024,2024-05-06 08:00:00+00:00,12:00:00,13:00:00,2024-05-06 20:00:00+00:00,Lovely,Rgn,Saffron Garden,,,12,252
-47,Staff B Careworker,23/05/2024,2024-05-23 08:00:00+00:00,12:00:00,13:00:00,2024-05-23 20:00:00+00:00,Lovely,Rgn,Saffron Garden,,,12,252
-48,Staff A Careworker,25/05/2024,2024-05-25 08:00:00+00:00,12:00:00,13:00:00,2024-05-25 20:00:00+00:00,Lovely,Rgn,Orchard Grove,,,12,300

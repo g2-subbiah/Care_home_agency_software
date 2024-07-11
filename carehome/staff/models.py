@@ -31,3 +31,14 @@ class WeekDateRange(models.Model):
     def __str__(self):
         # return f"Week {self.week_number} of {self.year}: {self.start_date} - {self.end_date}"
         return f"{self.week_name}: {self.start_date} - {self.end_date}"
+    
+class Week_2(models.Model):
+    date = models.DateField()
+    week_name = models.CharField(max_length=100)
+    week_day = models.CharField(max_length=100)
+    staff_name = models.CharField(max_length=100)
+    staff_availability_1 = models.BooleanField()
+    staff_availability_2 = models.BooleanField()
+
+    def __str__(self):
+        return f"{self.week_name} - {self.date}"

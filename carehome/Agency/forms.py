@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from .models import CustomUser
+from staff.models import WeekDateRange
 
 
 class UserRegistrationForm(UserCreationForm):
@@ -14,7 +15,7 @@ class UserRegistrationForm(UserCreationForm):
 
 class ClientRegistrationForm(UserCreationForm):
     email = forms.EmailField(required=True)
-    first_name = forms.CharField(label='Client name')  # Change the label here
+    first_name = forms.CharField(label='Client name') 
 
     class Meta:
         model = CustomUser
@@ -25,4 +26,7 @@ class ClientLoginForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
 
 
-
+# class FileUploadForm(forms.Form):
+#     staff = forms.ModelChoiceField(queryset=CustomUser.objects.all())
+#     week = forms.ModelChoiceField(queryset=WeekDateRange.objects.all())
+#     file = forms.FileField()

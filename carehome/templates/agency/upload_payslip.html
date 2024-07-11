@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Payslip</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: rgb(204, 231, 253);
+            padding: 20px; 
+            margin: 0;
+        }
+
+        .container {
+            border: 1px solid #ccc; 
+            border-radius: 8px; 
+            padding: 20px;
+            max-width: 800px; 
+            width: 100%; 
+            background-color: rgb(204, 231, 253);
+            margin-top: 3%;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .mb-3 {
+            margin-bottom: 20px;
+            margin-right: 10%;
+            margin-left: 10%;
+        }
+        .backbutton {
+            margin-left: 90%;
+            margin-right: 5%;
+            margin-top: 5%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Upload Payslip</h1>
+
+        {% if success_message %}
+            <div class="alert alert-success" role="alert">
+                {{ success_message }}
+            </div>
+        {% endif %}
+
+        <!-- Form for Payslip Upload -->
+        <form method="post" action="{% url 'upload_payslip' %}" enctype="multipart/form-data" class="mb-4">
+            {% csrf_token %}
+            <h3>Select Week and Staff for Payslip Upload</h3>
+            <div class="mb-3">
+                <label for="year" class="form-label">Select Year:</label>
+                <select id="year" name="year" class="form-select">
+                    {% for year in years %}
+                        <option value="{{ year }}">{{ year }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="week_number" class="form-label">Select Week Number:</label>
+                <select id="week_number" name="week_number" class="form-select">
+                    {% for week_date_range in week_date_ranges %}
+                        <option value="{{ week_date_range.week_number }}">Week {{ week_date_range.week_number }} of {{ week_date_range.year }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="staff_name" class="form-label">Select Staff Name:</label>
+                <select id="staff_name" name="staff_name" class="form-select">
+                    {% for staff in staff_names %}
+                        <option value="{{ staff.id }}">{{ staff.first_name }} {{ staff.last_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="file" class="form-label">Upload File:</label>
+                <input type="file" id="file" name="file" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-primary">Upload Payslip</button>
+        </form>
+    </div>
+
+    <div class="backbutton text-center mb-4">
+        <a href="{% url 'agency-front' %}">
+            <button type="button" class="btn btn-secondary">Back</button>
+        </a>
+    </div>    
+
+    <!-- Bootstrap JS (optional, for Bootstrap features) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

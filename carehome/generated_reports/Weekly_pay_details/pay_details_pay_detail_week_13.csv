@@ -1,0 +1,19 @@
+staff_id,staff_name,working_hours,Rate,Payment amount(£),Total Payment amount(£)
+121,Rohit Mathew,8.0,12.0,96.0,
+121,Rohit Mathew,12.0,14.5,174.0,
+121,Rohit Mathew,,,,270.0
+195,Jins Babu,12.0,12.0,144.0,
+195,Jins Babu,,,,144.0
+220,Akash Pulparambil Radhakrishnan,6.0,12.0,72.0,
+220,Akash Pulparambil Radhakrishnan,,,,72.0
+252,Ashik Sainudheen,48.0,12.0,576.0,
+252,Ashik Sainudheen,18.5,13.5,249.75,
+252,Ashik Sainudheen,,,,825.75
+253,Dony Chacko,22.0,12.0,264.0,
+253,Dony Chacko,,,,264.0
+268,Akilesh Babu,20.0,12.0,240.0,
+268,Akilesh Babu,12.0,13.5,162.0,
+268,Akilesh Babu,,,,402.0
+270,Ammu Panthalluparambil Raju,6.0,12.0,72.0,
+270,Ammu Panthalluparambil Raju,12.0,14.5,174.0,
+270,Ammu Panthalluparambil Raju,,,,246.0

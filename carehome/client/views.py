@@ -8,10 +8,17 @@ from django.contrib.auth import logout
 from Agency.backends import GroupBasedBackend
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
+from staff.models import WeekDateRange
+from datetime import datetime, timedelta, date
+from .forms import WeekForm
+from .requirement import SubmitRequirementView
+from django.views.generic import TemplateView
+from django.views.generic import View
+
 
 
 def clientlogin(request):
-    users = CustomUser.objects.filter(groups__name='client')  # Retrieve client users
+    users = CustomUser.objects.filter(groups__name='client')  # Retrieving client users
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
@@ -21,10 +28,10 @@ def clientlogin(request):
             if user is not None:
                 if hasattr(user, 'needs_password_change') and user.needs_password_change:
                     login(request, user)
-                    return redirect('change-password2')  # Redirect to the password change page
+                    return redirect('change-password2')  # Redirecting to the password change page
                 else:
                     login(request, user)
-                    return redirect('client-front')  # Redirect to client home page
+                    return redirect('client-front')  # Redirecting to client home page
             else:
                 return HttpResponse("Invalid login credentials or unauthorized access")
     else:
@@ -39,16 +46,16 @@ def change_password2(request):
             update_session_auth_hash(request, user)
             user.needs_password_change = False
             user.save()
-            return redirect('client-login')  # Redirect to client home page after changing password
+            return redirect('client-login')  # Redirecting to client home page after changing password
     else:
         form = PasswordChangeForm(request.user)
     return render(request, 'client/change_password2.html', {'form': form})
 
-def client_front(request):
-    context = {
-        'first_name': request.user.first_name,
-    }
-    return render(request, "client/clientfrontpage.html", context)
+class SuccessRequirementView(View):
+    template_name = 'client/success_requirement.html'
+
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name)
 
 
-
+    

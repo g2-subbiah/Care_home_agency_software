@@ -18,15 +18,17 @@
         }
 
         @media print {
-        html, body {
-        background: none;
-        -webkit-print-color-adjust: exact; 
-        }}
+            html, body {
+                background: none;
+                -webkit-print-color-adjust: exact; 
+                print-color-adjust: exact; 
+            }
+        }
 
         body {
             font-family: 'Roboto', sans-serif;
             padding: 20px;
-            background-color: rgb(144, 171, 225);
+            background-color: rgb(220, 231, 240);
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center center;
@@ -105,18 +107,11 @@
             margin-right: 10px;
         }
 
-
-        /* @media (min-width: 768px) {
-            .btn-primary, .btn-secondary {
-                width: auto;
-                margin-right: 10px;
-            }
-        } */
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="card text-center my-4" style="background-color:  rgb(195, 208, 246);">
+        <div class="card text-center my-4" style="background-color:  #d2dbdd;">
             <div class="card-body">
                 <h1 style="color:crimson;">Divine Health and Care Services</h1>
                 <h2 style="color:darkblue;">Online Timesheet</h2>
@@ -214,12 +209,9 @@
                     <div class="d-flex justify-content-between">
                         <button type="button" class="btn btn-primary" onclick="resetForm()">Reset</button>
                         <button type="submit" class="btn btn-success">Submit</button>
-                        <!-- <div class="text-center mb-4"> -->
-                            <a href="{% url 'staff-front' %}">
-                                <button type="button" class="btn btn-secondary">Back</button>
-                            </a>    
-                        <!-- </div> -->
-                
+                        <a href="{% url 'staff-front' %}">
+                            <button type="button" class="btn btn-secondary">Back</button>
+                        </a>                   
                     </div>
                 </form>
             </div>
@@ -269,7 +261,7 @@
             document.getElementById('shift_started_time').value = dateStr + 'T08:00';
             document.getElementById('shift_finished_time').value = dateStr + 'T20:00';
         });
-        </script>
+    </script>
 </body>
 </html>
 

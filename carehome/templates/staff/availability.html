@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <title>Staff availabilities</title>
+    <style>
+        body {
+            background-color: rgb(220, 231, 240);
+            font-family: Arial, sans-serif;
+        }
+        .titlecontents {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .btn.btn-dark {
+            width: 45%;
+        }
+        .container {
+            margin-top: 1%;
+            margin-bottom: 1%;
+        }
+        .container_stafflist {
+            max-height: 85%;
+            margin-top: 9%;
+            margin-left: 30%;
+            margin-right: 10%;
+        }
+        .time-input {
+            width: auto;
+            display: inline-block;
+        }
+        table th, table td {
+            max-width: 10%;
+            width: 10%;
+        }
+        th.add-time, th[colspan="2"] {
+            width: 5%;
+        }
+        .d-flex.justify-content-end {
+            margin-bottom: 1rem;
+        }
+        .form-footer {
+            margin-top: 2%;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+        .form-footer .btn {
+            margin-left: 10px;
+        }
+        
+        /* Responsive styles */
+        @media only screen and (max-width: 768px) {
+            .container {
+                margin-top: 5%;
+                margin-bottom: 5%;
+            }
+            .titlecontents {
+                padding: 10px;
+            }
+            .btn.btn-dark {
+                width: 100%;
+            }
+            .container_stafflist {
+                max-height: 100%;
+                margin-top: 5%;
+                margin-left: 10%;
+                margin-right: 10%;
+            }
+            table th, table td {
+                max-width: 20%;
+                width: 20%;
+            }
+            th.add-time, th[colspan="2"] {
+                width: 10%;
+            }
+        }
+        @media only screen and (max-width: 480px) {
+            .container {
+                margin-top: 10%;
+                margin-bottom: 10%;
+            }
+            .titlecontents {
+                padding: 5px;
+            }
+            .btn.btn-dark {
+                width: 100%;
+            }
+            .container_stafflist {
+                max-height: 100%;
+                margin-top: 10%;
+                margin-left: 5%;
+                margin-right: 5%;
+            }
+            table th, table td {
+                max-width: 30%;
+                width: 30%;
+            }
+            th.add-time, th[colspan="2"] {
+                width: 15%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="titlecontents text-center my-4">
+        <h1>Divine Health and Care Services</h1>
+        <h2>Staff availabilities</h2>
+        <h3>Welcome, {{ staff_name }}</h3>
+    </div>
+    <div class="container"><br>
+        <form method="post" action="{% url 'submit-availability' %}">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="weekSelect" class="form-label">Select Week</label>
+                <select class="form-select" id="weekSelect" name="week_id">
+                    {% for week in weeks %}
+                        <option value="{{ week.id }}" {% if week.id == selected_week.id %}selected{% endif %}>
+                            {{ week.week_name }}: {{ week.start_date }} - {{week.end_date }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            {% if selected_week %}
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Weekday</th>
+                        <th>Staff Availability (8:00 to 20:00)</th>
+                        <th>Staff Availability (20:00 to 8:00)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for date_info in dates %}
+                        <tr>
+                            <td>{{ date_info.date }}</td>
+                            <td>{{ date_info.weekday }}</td>
+                            <td><input type="checkbox" name="staff_availability_1_{{ date_info.date|date:'Y-m-d' }}"></td>
+                            <td><input type="checkbox" name="staff_availability_2_{{ date_info.date|date:'Y-m-d' }}"></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+        
+            <div class="form-footer">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <a href="{% url 'staff-front' %}" class="btn btn-secondary me-2">Back</a>
+            </div>
+            {% if success_message %}
+                <div class="alert alert-success">{{ success_message }}</div>
+            {% endif %}
+        </form><br>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const weekSelect = document.getElementById('weekSelect');
+        weekSelect.addEventListener('change', function () {
+            const selectedWeekId = this.value;
+            const url = new URL(window.location.href);
+            url.searchParams.set('week_id', selectedWeekId);
+            window.location.href = url.toString();
+        });
+    });
+    </script>
+</body>
+</html>

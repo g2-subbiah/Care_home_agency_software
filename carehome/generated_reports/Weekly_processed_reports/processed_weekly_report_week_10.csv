@@ -1,5 +1,0 @@
-s_no,staff_name,date_of_work,Day,shift_started_time,shift_finished_time,working_hours,Rate,care_home_name
-1,Staff A Careworker,03/06/2024,Monday,08:00,20:00,12,12,Orchard Grove
-2,Staff B Careworker,08/06/2024,Saturday,08:00,20:00,12,13.5,Saffron Garden
-3,Staff C Careworker,09/06/2024,Sunday,08:00,20:00,12,14.5,Orchard Grove
-4,Staff C Careworker,09/06/2024,Sunday,20:00,08:00,12,14.5,Saffron Garden

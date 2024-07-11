@@ -11,24 +11,27 @@
     <title>Divine Health and Care Services</title>
     <style>
         body{
-            background-image: url("{% static 'image/background.png' %}");
+            background-image: url("{% static 'image/bg2.png' %}");
         }
 
         .titlecontents {
-            background-color: #ffffff; /* White background for title section */
+            background-color: #ffffff;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         .img-container {
-            background-color: rgb(118, 175, 222); /* Same as body background color */
             padding: 10px;
             border-radius: 10px;
             display: inline-block;
         }
-        .img1, .img2 {
+        .img1 {
             border-radius: 10px; /* Rounded corners for images */
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .dropdown-toggle, .dropdown-menu {
+            width: 200px; 
         }
        
     </style>
@@ -36,7 +39,7 @@
 <body>
     <div class="titlecontents text-center my-4">
         <h1>Divine Health and Care Services</h1>
-        <h2>Welcome Page</h2>
+        <h2>WELCOME</h2>
     </div>
     <br>
 
@@ -45,7 +48,7 @@
     </div>
 
     <div class="dropdown text-center my-4">
-        <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="margin-left: -11%;">
+        <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="margin-left: -11%; margin-top: 8%;">
             User Login
         </button>
         <ul class="dropdown-menu">
@@ -55,8 +58,6 @@
         </ul>
     </div>
 
-    <div class="text-center my-4">
-        <img class="img2" src="{% static 'image/welcome2.png' %}" alt="welcome-image">
-    </div>
+
 </body>
 </html>

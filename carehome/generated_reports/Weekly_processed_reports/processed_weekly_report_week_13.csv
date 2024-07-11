@@ -1,2 +1,18 @@
 s_no,staff_name,date_of_work,Day,shift_started_time,shift_finished_time,working_hours,Rate,care_home_name
-1,Staff A Careworker,2024-06-27,Thursday,08:00,20:00,12.0,12,Saffron Garden
+1,Akash Pulparambil Radhakrishnan,2024-06-28,Friday,08:00,14:00,6.0,12.0,Orchard Grove
+2,Akilesh Babu,2024-06-29,Saturday,08:00,20:00,12.0,13.5,Little Heath
+3,Akilesh Babu,2024-06-25,Tuesday,10:00,20:00,10.0,12.0,Saffron Garden
+4,Akilesh Babu,2024-06-24,Monday,10:00,20:00,10.0,12.0,Saffron Garden
+5,Ammu Panthalluparambil Raju,2024-06-28,Friday,08:00,14:00,6.0,12.0,Orchard Grove
+6,Ammu Panthalluparambil Raju,2024-06-30,Sunday,08:00,20:00,12.0,14.5,Little Heath
+7,Ashik Sainudheen,2024-06-28,Friday,08:00,20:00,12.0,12.0,Little Heath
+8,Ashik Sainudheen,2024-06-29,Saturday,20:00,08:00,12.0,13.5,Little Heath
+9,Ashik Sainudheen,2024-06-26,Wednesday,20:00,08:00,12.0,12.0,Little Heath
+10,Ashik Sainudheen,2024-06-24,Monday,20:00,08:00,12.0,12.0,Little Heath
+11,Ashik Sainudheen,2024-06-29,Saturday,08:00,14:30,6.5,13.5,Orchard Grove
+12,Ashik Sainudheen,2024-06-25,Tuesday,20:00,08:00,12.0,12.0,Orchard Grove
+13,Dony Chacko,2024-06-25,Tuesday,10:00,20:00,10.0,12.0,Saffron Garden
+14,Dony Chacko,2024-06-28,Friday,08:00,20:00,12.0,12.0,Little Heath
+15,Jins Babu,2024-06-24,Monday,08:00,20:00,12.0,12.0,Little Heath
+16,Rohit Mathew,2024-06-30,Sunday,20:00,08:00,12.0,14.5,Little Heath
+17,Rohit Mathew,2024-06-28,Friday,08:00,16:00,8.0,12.0,Orchard Grove
