@@ -1,0 +1,24 @@
+care_home_name,staff_name,date_of_work,day_name,shift_started_time,shift_finished_time,worked_hours,invoice_rate,invoice_amount
+Little Heath,Moradeyo Bodunde,2024-06-22,Saturday,09:00,20:00,11.0,25.0,275.0
+Little Heath,Seematty Kalani Sivaraman,2024-06-22,Saturday,08:00,20:00,12.0,25.0,300.0
+Little Heath,Seematty Kalani Sivaraman,2024-06-23,Sunday,08:00,20:00,12.0,25.0,300.0
+Little Heath,Ashik Sainudheen,2024-06-24,Monday,20:00,08:00,-12.0,21.0,-252.0
+Little Heath,Jins Babu,2024-06-24,Monday,08:00,20:00,12.0,21.0,252.0
+Little Heath,Ashik Sainudheen,2024-06-26,Wednesday,20:00,08:00,-12.0,21.0,-252.0
+Little Heath,Ashik Sainudheen,2024-06-28,Friday,08:00,20:00,12.0,21.0,252.0
+Little Heath,Dony Chacko,2024-06-28,Friday,08:00,20:00,12.0,21.0,252.0
+Little Heath,Akilesh Babu,2024-06-29,Saturday,08:00,20:00,12.0,25.0,300.0
+Little Heath,Ashik Sainudheen,2024-06-29,Saturday,20:00,08:00,-12.0,25.0,-300.0
+Little Heath,Ammu Panthalluparambil Raju,2024-06-30,Sunday,08:00,20:00,12.0,25.0,300.0
+Little Heath,Rohit Mathew,2024-06-30,Sunday,20:00,08:00,-12.0,25.0,-300.0
+Little Heath,,,,,,,,1127.0
+Orchard Grove,Ashik Sainudheen,2024-06-25,Tuesday,20:00,08:00,-12.0,21.0,-252.0
+Orchard Grove,Akash Pulparambil Radhakrishnan,2024-06-28,Friday,08:00,14:00,6.0,21.0,126.0
+Orchard Grove,Ammu Panthalluparambil Raju,2024-06-28,Friday,08:00,14:00,6.0,21.0,126.0
+Orchard Grove,Rohit Mathew,2024-06-28,Friday,08:00,16:00,8.0,21.0,168.0
+Orchard Grove,Ashik Sainudheen,2024-06-29,Saturday,08:00,14:30,6.5,25.0,162.5
+Orchard Grove,,,,,,,,330.5
+Saffron Garden,Akilesh Babu,2024-06-24,Monday,10:00,20:00,10.0,21.0,210.0
+Saffron Garden,Akilesh Babu,2024-06-25,Tuesday,10:00,20:00,10.0,21.0,210.0
+Saffron Garden,Dony Chacko,2024-06-25,Tuesday,10:00,20:00,10.0,21.0,210.0
+Saffron Garden,,,,,,,,630.0

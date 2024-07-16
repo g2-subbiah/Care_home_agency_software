@@ -2,6 +2,8 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from .models import CustomUser
 from staff.models import WeekDateRange
+from .models import StaffPreference
+
 
 
 class UserRegistrationForm(UserCreationForm):
@@ -26,7 +28,15 @@ class ClientLoginForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
 
 
-# class FileUploadForm(forms.Form):
-#     staff = forms.ModelChoiceField(queryset=CustomUser.objects.all())
-#     week = forms.ModelChoiceField(queryset=WeekDateRange.objects.all())
-#     file = forms.FileField()
+class StaffPreferenceForm(forms.ModelForm):
+    class Meta:
+        model = StaffPreference
+        fields = ['care_home_name', 'date', 'week_name', 'staff_required_field', 'staff_name', 'staff_required_sum']
+        widgets = {
+            'care_home_name': forms.HiddenInput(),
+            'date': forms.HiddenInput(),
+            'week_name': forms.HiddenInput(),
+            'staff_required_field': forms.HiddenInput(),
+            'staff_name': forms.HiddenInput(),
+            'staff_required_sum': forms.HiddenInput(),
+        }

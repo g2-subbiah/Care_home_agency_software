@@ -8,8 +8,15 @@ from django.views import View
 from staff.models import WeekDateRange, TimeSheet
 from django.conf import settings
 from .models import CustomUser
-from django.db.models import Value as V
 from django.db.models.functions import Concat
+from reportlab.lib import colors
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, TableStyle, KeepTogether
+from reportlab.lib.styles import getSampleStyleSheet
+from django.db.models import Sum
+from django.db.models import F, Value as V
+from reportlab.platypus import PageBreak
+
 
 
 class WeeklyReportView(View):
@@ -238,6 +245,9 @@ class WeeklyReportView(View):
             pay_details_output_path = os.path.join(generated_reports_dir, 'Weekly_pay_details', 'pay_details_' + os.path.basename(output_filename))
             final_output.to_csv(pay_details_output_path, index=False)
 
+            self.generate_pdf_report(final_output, week_number, year)
+
+
             # Returning the pay details CSV file as a response
             with open(pay_details_output_path, 'rb') as f:
                 response = HttpResponse(f.read(), content_type='text/csv')
@@ -246,6 +256,60 @@ class WeeklyReportView(View):
 
         except Exception as e:
             return HttpResponseBadRequest(f'Error generating pay details: {str(e)}')
+        
+    def generate_pdf_report(self, data_frame, week_number, year):
+
+        data_frame = data_frame.fillna('')
+
+        data_frame['Rate'] = pd.to_numeric(data_frame['Rate'], errors='coerce').fillna(0)
+        data_frame['working_hours'] = pd.to_numeric(data_frame['working_hours'], errors='coerce').fillna(0)
+        data_frame['Payment amount(£)'] = pd.to_numeric(data_frame['Payment amount(£)'], errors='coerce').fillna(0)
+        data_frame = data_frame[(data_frame['Rate'] > 0) & (data_frame['working_hours'] > 0) & (data_frame['Payment amount(£)'] > 0)]
+        # Creating the directory for PDF reports if it doesn't exist
+        pdf_reports_dir = os.path.join(settings.GENERATED_REPORTS_DIR, 'PDF_reports', 'Pay_details')
+        os.makedirs(pdf_reports_dir, exist_ok=True)
+        pdf_filename = f"pay_detail_week_{week_number}.pdf"
+        pdf_path = os.path.join(pdf_reports_dir, pdf_filename)
+
+        # Create a PDF document
+        doc = SimpleDocTemplate(pdf_path, pagesize=letter)
+        elements = []
+        styles = getSampleStyleSheet()
+        title = Paragraph(f"Weekly Pay Details Report - Week {week_number} of {year}", styles['Title'])
+        elements.append(title)
+
+        # Iterate over each staff member to create sections
+        for staff_id, group in data_frame.groupby('staff_id'):
+            staff_name = group['staff_name'].iloc[0]
+            staff_paragraph = Paragraph(f"Staff Name: {staff_name}", styles['Heading2'])
+
+            # Prepare data for table
+            table_data = [
+                ['staff_id','Rate', 'Working Hours', 'Payment amount(£)']
+            ]
+            for _, row in group.iterrows():
+                table_data.append([row['staff_id'],row['Rate'], row['working_hours'], row['Payment amount(£)']])
+
+            total_payment = group['Payment amount(£)'].sum()
+            table_data.append(['','', 'Total Payment amount(£)', total_payment])
+
+            # Create table
+            table = Table(table_data, splitByRow=False)
+            table.setStyle(TableStyle([
+                ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+                ('TEXTCOLOR', (0, 0), (0, 0), colors.whitesmoke),
+                ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+                ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+                ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+                ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+                ('GRID', (0, 0), (-1, -1), 1, colors.black),
+            ]))
+
+            elements.append(KeepTogether([staff_paragraph, table]))
+            elements.append(Paragraph("<br/><br/>", styles['Normal']))
+
+        # Build the PDF
+        doc.build(elements)
 
 
     def add_weekday_column(self, df, date_col):

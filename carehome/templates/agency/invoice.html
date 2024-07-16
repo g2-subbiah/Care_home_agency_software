@@ -64,7 +64,7 @@
                 <label for="year_generate" class="form-label">Year:</label>
                 <select id="year_generate" name="year" class="form-select">
                     {% for year in years %}
-                        <option value="{{ year }}">{{ year }}</option>
+                        <option value="{{ year }}" {% if year == current_year %}selected{% endif %}>{{ year }}</option>
                     {% endfor %}
                 </select>
             </div><br>
@@ -84,18 +84,11 @@
             </div>
             <br>
 
-            <div>
-                <input type="hidden" name="year" value="{{ selected_year }}">
-                <input type="hidden" name="month_number" value="{{ selected_month }}">
+            <div class="btn-group">
                 <!-- Process Report Button -->
-                <div class="btn-group">
-                    <button type="submit" class="btn btn-success" name="action" value="process_report">Process Report</button>
-                </div>
+                <button type="submit" class="btn btn-success" name="action" value="process_report">Process Report</button>
             </div>
-
         </form><br>
-
-      
     </div><br>
 
     <div class="backbutton text-center mb-4" style="margin-left: 90%; margin-right: 5%; margin-top: -1%;">

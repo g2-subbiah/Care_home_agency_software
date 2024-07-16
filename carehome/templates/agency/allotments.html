@@ -7,7 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Allotments</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <style>
         .table-container {
             margin-top: 20px;
@@ -31,17 +32,26 @@
             color: darkblue;
             text-align: center;
         }
+        #message-area {
+            display: none;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            width: 300px; /* Adjust as necessary */
+        }
+
     </style>
 </head>
 <body>
     <div class="container">
         <h2 class="my-4">Allotments</h2>
 
-        <form method="post">
+        <form method="post" action="{% url 'allotments' %}">
             {% csrf_token %}
             <div class="form-group">
                 <label for="week_name">Select Week Name:</label>
-                <select class="form-control" id="week_name" name="week_name">
+                <select class="form-control" id="week_name" name="week_name" required>
                     {% for week_name in week_names %}
                         <option value="{{ week_name }}" {% if selected_week_name == week_name %}selected{% endif %}>{{ week_name }}</option>
                     {% endfor %}
@@ -49,77 +59,99 @@
             </div>
             <div class="form-group">
                 <label for="year">Select Year:</label>
-                <select class="form-control" id="year" name="year">
+                <select class="form-control" id="year" name="year" required>
                     {% for year in week_years %}
                         <option value="{{ year }}" {% if selected_year == year %}selected{% endif %}>{{ year }}</option>
                     {% endfor %}
                 </select>
             </div>
-            <button type="submit" class="btn btn-primary">Extract</button>
+            <button type="submit" class="btn btn-primary extract-btn">Extract</button>
         </form>
 
         {% if organized_data %}
         <div>
-            <h2 style="text-align: center; color: rgb(76, 31, 15);">Requirements and Availabilities for {{ selected_week_name }}</h2>
+            <h3 style="text-align: center; color: rgb(210, 11, 11)";">Requirements and Availabilities for {{ selected_week_name }} of {{year}}-{{year|add:1 }}</h3>
         </div>
         {% for care_home_name, data in organized_data.items %}
         <div class="table-container">
-            <h3>{{ care_home_name }}</h3>
+
+            <h3>Care Home Name: {{ care_home_name }}</h3>
             <table class="table table-striped table-bordered">
                 <thead>
                     <tr>
-                        <th>Care Home Name</th>
+                        <!-- <th>Care Home Name</th> -->
                         <th>Date</th>
-                        <th>Staff Required 1</th>
-                        <th>Staff Required 2</th>
-                        <th>Staff Required 3</th>
-                        <th>Staff Required 4</th>
+                        <th>Time - 8:00 to 20:00</th>
+                        <th>Time - 20:00 to 8:00</th>
+                        <th>Time - 8:00 to 14:00</th>
+                        <th>Time - 14:00 to 20:00</th>
+                        <th>Total Staff Required</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td rowspan="14">{{ care_home_name }}</td>
+                        <!-- <td rowspan="15">{{ care_home_name }}</td> -->
 
                     {% for date, details in data.data.items %}
+                    <tr>
                         <td rowspan="2">{{ date }}</td>
-                        <td style="color: rgb(142, 26, 26);">{{ details.staff_required.staff_required_1|default_if_none_or_zero:'-' }}</td>
-                        <td style="color: rgb(142, 26, 26);">{{ details.staff_required.staff_required_2|default_if_none_or_zero:'-' }}</td>
-                        <td style="color: rgb(142, 26, 26);">{{ details.staff_required.staff_required_3|default_if_none_or_zero:'-' }}</td>
-                        <td style="color: rgb(142, 26, 26);">{{ details.staff_required.staff_required_4|default_if_none_or_zero:'-' }}</td>
+                        <td style="color:rgb(210, 11, 11)">{{ details.staff_required.staff_required_1|default_if_none_or_zero:'-' }}</td>
+                        <td style="color:rgb(210, 11, 11)">{{ details.staff_required.staff_required_2|default_if_none_or_zero:'-' }}</td>
+                        <td style="color:rgb(210, 11, 11)">{{ details.staff_required.staff_required_3|default_if_none_or_zero:'-' }}</td>
+                        <td style="color:rgb(210, 11, 11)">{{ details.staff_required.staff_required_4|default_if_none_or_zero:'-' }}</td>
+                        <td style="color:rgb(210, 11, 11)">{{ details.staff_required_sum|default_if_none_or_zero:'-' }}</td>
                     </tr>
                     <tr>
-                        <td>
-                            {% for staff in details.staff_availability.staff_required_1 %}
-                                <input type="checkbox" id="staff1-{{ forloop.parentloop.counter0 }}-{{ forloop.counter0 }}" name="staff1" value="{{ staff }}">
-                                <label for="staff1-{{ forloop.parentloop.counter0 }}-{{ forloop.counter0 }}">{{ staff }}</label><br>
-                            {% endfor %}
-                        </td>
-                        <td>
-                            {% for staff in details.staff_availability.staff_required_2 %}
-                                <input type="checkbox" id="staff2-{{ forloop.parentloop.counter0 }}-{{ forloop.counter0 }}" name="staff2" value="{{ staff }}">
-                                <label for="staff2-{{ forloop.parentloop.counter0 }}-{{ forloop.counter0 }}">{{ staff }}</label><br>
-                            {% endfor %}
-                        </td>
-                        <td>
-                            {% for staff in details.staff_availability.staff_required_3 %}
-                                <input type="checkbox" id="staff3-{{ forloop.parentloop.counter0 }}-{{ forloop.counter0 }}" name="staff3" value="{{ staff }}">
-                                <label for="staff3-{{ forloop.parentloop.counter0 }}-{{ forloop.counter0 }}">{{ staff }}</label><br>
-                            {% endfor %}
-                        </td>
-                        <td>
-                            {% for staff in details.staff_availability.staff_required_4 %}
-                                <input type="checkbox" id="staff4-{{ forloop.parentloop.counter0 }}-{{ forloop.counter0 }}" name="staff4" value="{{ staff }}">
-                                <label for="staff4-{{ forloop.parentloop.counter0 }}-{{ forloop.counter0 }}">{{ staff }}</label><br>
-                            {% endfor %}
-                        </td>
+                        <form class="savePreferencesForm" method="post" action="{% url 'save_preferences' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="preferences_saved" value="true">
+                            <input type="hidden" name="care_home_name" value="{{ care_home_name }}">
+                            <input type="hidden" name="date" value="{{ date }}">
+                            <input type="hidden" name="week_name" value="{{ selected_week_name }}">
+                            <td>
+                                {% for staff in details.staff_availability.staff_required_1 %}
+                                    <input type="checkbox" id="staff1-{{ forloop.counter0 }}" name="staff_required_1" value="{{ staff }}">
+                                    <label for="staff1-{{ forloop.counter0 }}">{{ staff }}</label><br>
+                                {% endfor %}
+                            </td>
+                            <td>
+                                {% for staff in details.staff_availability.staff_required_2 %}
+                                    <input type="checkbox" id="staff2-{{ forloop.counter0 }}" name="staff_required_2" value="{{ staff }}">
+                                    <label for="staff2-{{ forloop.counter0 }}">{{ staff }}</label><br>
+                                {% endfor %}
+                            </td>
+                            <td>
+                                {% for staff in details.staff_availability.staff_required_3 %}
+                                    <input type="checkbox" id="staff3-{{ forloop.counter0 }}" name="staff_required_3" value="{{ staff }}">
+                                    <label for="staff3-{{ forloop.counter0 }}">{{ staff }}</label><br>
+                                {% endfor %}
+                            </td>
+                            <td>
+                                {% for staff in details.staff_availability.staff_required_4 %}
+                                    <input type="checkbox" id="staff4-{{ forloop.counter0 }}" name="staff_required_4" value="{{ staff }}">
+                                    <label for="staff4-{{ forloop.counter0 }}">{{ staff }}</label><br>
+                                {% endfor %}
+                            </td>
+                            <td>
+                                {% if details.staff_required_sum > 0 %}
+                                    <button type="submit" class="btn {% if date in preferences_saved_dates %}btn-primary{% else %}btn-success{% endif %} save-prefs-btn" onclick="changeButtonText(this)">
+                                        {% if date in preferences_saved_dates %}
+                                            Change Preferences
+                                        {% else %}
+                                            Save Preferences
+                                        {% endif %}
+                                    </button>
+                                {% endif %}
+                            </td>
+                        </form>
                     </tr>
                     {% endfor %}
+                    <div id="message-area"></div>
                 </tbody>
             </table>
         </div>
         {% endfor %}
-        {% else %}
-        <p>No data available.</p>
+        {% elif selected_week_name and year %}
+        <p>No data available for the selected week and year.</p>
         {% endif %}
 
         <div class="mt-4">
@@ -127,6 +159,82 @@
         </div>
     </div>
 
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+Wy6pXa6pYfL8h6eV6pO5npfTJEHp5k+" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function() {
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+    
+            const csrftoken = getCookie('csrftoken');
+    
+            $.ajaxSetup({
+                beforeSend: function(xhr, settings) {
+                    if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            });
+
+   
+            // Handle form submission via AJAX
+            $(document).on('submit', '.savePreferencesForm', function(event) {
+                event.preventDefault(); // Prevent default form submission
+
+                var form = $(this); // Get the form element
+                var button = form.find('button.btn.btn-success.save-prefs-btn'); // Get the button element within the form
+                console.log("Button before change:", button);
+
+                button.text('Changing Preferences...'); // Change button text while processing
+                button.prop('disabled', true); // Disable button during processing
+                console.log("Button after change:", button);
+
+  
+                $.ajax({
+                    type: 'POST',
+                    url: $(this).attr('action'), // Use the form's action attribute
+                    data: $(this).serialize(), // Serialize form data
+                    success: function(response) {
+                        button.text('Change Preferences');
+                        button.prop('disabled', false); // Re-enable the button
+                        $('#message-area').html('<div class="alert alert-success">' + response.success + '</div>').fadeIn();
+                        setTimeout(function() {
+                            $('#message-area').fadeOut();
+                        }, 3000);            
+                    },      
+                    
+                    error: function(xhr) {
+                        button.text('Save Preferences');
+                        button.prop('disabled', false); // Re-enable button
+                        const errorMsg = xhr.responseJSON.error || 'An error occurred.';
+                        $('#message-area').html('<div class="alert alert-danger">' + errorMsg + '</div>').fadeIn();
+                        setTimeout(function() {
+                            $('#message-area').fadeOut();
+                        }, 3000);
+                    }
+                });
+            });
+        });
+
+    </script>    
+    <script>
+        function changeButtonText(button) {
+            button.textContent = 'Change Preferences'; // Change button text
+            button.classList.remove('btn-success'); // Remove the current class
+            button.classList.add('btn-primary'); // Add the new class
+        }
+    </script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

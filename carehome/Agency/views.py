@@ -26,7 +26,8 @@ from .timesheet_view import TimesheetTableView, WeeklyTimesheetsView, MonthlyTim
 from .models import CustomUser
 from django.contrib.auth import get_user_model, logout
 from .payslips import upload_payslip
-from .allotments import match_staff
+from .allotments import match_staff, save_preferences_logic
+from .client_schedule import schedule_view
 
 User = get_user_model()
 

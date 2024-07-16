@@ -4,10 +4,8 @@ from .views import WeeklyReportView, ClearTimeSheetsView, MonthlyReportView, Tim
 from django.conf import settings
 from django.conf.urls.static import static
 from .timesheet_view import TimesheetTableView, WeeklyTimesheetsView, MonthlyTimesheetsView
-#from staff.views import CreateWeeksTableView
 
 urlpatterns = [
-    # agency
     path("agencyloginpage/",views.agencylogin,name='agency-login'),
     path("agency/forgetpw/",views.forgetpw,name='forgetpw'),
     path("agencyfrontpage/",views.agency_front,name='agency-front'),
@@ -24,6 +22,10 @@ urlpatterns = [
     path('agencyfrontpage/timesheets_view_monthly/', TimesheetTableView.as_view(), name='timesheets_view_monthly'),
     path('agencyfrontpage/upload_payslip/', views.upload_payslip, name='upload_payslip'),
     path('agencyfrontpage/allotments/', views.match_staff, name='allotments'),
+    path('allotments/save_preferences/', views.save_preferences_logic, name='save_preferences'),
+    path('agencyfrontpage/schedule_page1/', views.schedule_view, name='schedule_page1'),
+    path('schedule_page1/client_schedule/', views.schedule_view, name='client_schedule'),  
+
 
 ]
 
