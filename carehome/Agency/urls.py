@@ -25,7 +25,8 @@ urlpatterns = [
     path('allotments/save_preferences/', views.save_preferences_logic, name='save_preferences'),
     path('agencyfrontpage/schedule_page1/', views.schedule_view, name='schedule_page1'),
     path('schedule_page1/client_schedule/', views.schedule_view, name='client_schedule'),  
-
+    path('agencyfrontpage/schedule_page2/', views.availability_view, name='schedule_page2'),
+    path('schedule_page1/staff_schedule/', views.availability_view, name='staff_schedule'),  
 
 ]
 

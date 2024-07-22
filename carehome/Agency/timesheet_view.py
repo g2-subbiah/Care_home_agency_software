@@ -9,9 +9,6 @@ from Agency.models import CustomUser
 import calendar
 from django.contrib.auth.decorators import login_required 
 from django.utils.decorators import method_decorator
-import logging
-
-logger = logging.getLogger(__name__)
 
 
 

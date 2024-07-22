@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedule View</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: rgb(204, 231, 253);
+            padding: 20px; 
+            margin: 0;
+        }
+        .container {
+            border: 1px solid #ccc; 
+            border-radius: 8px; 
+            padding: 20px;
+            max-width: 800px; 
+            width: 100%; 
+            background-color: rgb(204, 231, 253);
+            margin-top: 3%;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .mb-3 {
+            margin-bottom: 20px;
+            margin-right: 10%;
+            margin-left: 10%;
+        }
+        .backbutton {
+            margin-left: 90%;
+            margin-right: 5%;
+            margin-top: 5%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Client Schedule View</h1>
+        <form method="post" action="{% url 'schedule_page2' %}" class="mb-4">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="schedule_view">
+            <h3>Select Care home name and week for schedule</h3>
+            <div class="mb-3">
+                <label for="year" class="form-label">Year:</label>
+                <select id="year" name="year" class="form-select">
+                    {% for year in years %}
+                        <option value="{{ year }}">{{ year }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="week_name" class="form-label">Select Week Number:</label>
+                <select id="week_name" name="week_name" class="form-select">
+                    {% for week_name in week_names %}
+                        <option value="{{ week_name }}">{{ week_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="staff_name_weekly" class="form-label">Select Staff Name:</label>
+                <select id="staff_name_weekly" name="staff_name" class="form-select">
+                    {% for staff_name in staff_names %}
+                        <option value="{{ staff_name }}">{{ staff_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div>
+                <button type="submit" class="btn btn-primary">View Schedule</button>
+            </div>
+        </form>
+        <div class="backbutton text-center mb-4">
+            <a href="{% url 'agency-front' %}">
+                <button type="button" class="btn btn-secondary">Back</button>
+            </a>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -16,6 +16,7 @@ urlpatterns = [
     path('stafffrontpage/availability/success-requirement/', views.SuccessAvailabilityView.as_view(), name='success_availability'),
     path('stafffrontpage/staff_weekly_timesheets/', views.StaffWeeklyTimesheetsView.as_view(), name='staff_weekly_timesheets'),
     path('stafffrontpage/download_payslip/', views.download_payslip, name='download_payslip'),
+    path('stafffrontpage/scheduling_staff/', views.staff_availability_view, name='scheduling_staff'),
 
 ] 
 

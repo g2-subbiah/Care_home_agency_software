@@ -250,7 +250,7 @@ class MonthlyReportView(View):
                 for i in range(2, 6):
                     col_widths[i] = 1.2 * inch
 
-                group_table = Table(group_data, colWidths=col_widths, rowHeights=[30] * len(group_data))
+                group_table = Table(group_data, colWidths=col_widths, rowHeights=[18] * len(group_data))
 
                 # Set the style for group tables
                 group_table.setStyle(TableStyle([

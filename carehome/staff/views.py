@@ -26,6 +26,7 @@ from .availability import SubmitAvailabilityView
 from django.views.generic import View
 from Agency.views import StaffWeeklyTimesheetsView
 from .download_payslip import download_payslip
+from .staff_schedule import availability_view, staff_availability_view
 
 
 #from .create_week import CreateWeeksTableView

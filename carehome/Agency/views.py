@@ -28,6 +28,7 @@ from django.contrib.auth import get_user_model, logout
 from .payslips import upload_payslip
 from .allotments import match_staff, save_preferences_logic
 from .client_schedule import schedule_view
+from staff.staff_schedule import availability_view
 
 User = get_user_model()
 

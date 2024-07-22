@@ -8,5 +8,7 @@ urlpatterns = [
     path('clientloginpage/clientfrontpage/', views.SubmitRequirementView.as_view(), name='client-front'),
     path('clientloginpage/clientfrontpage/submit-requirement/', views.SubmitRequirementView.as_view(), name='submit-requirement'),
     path('clientloginpage/clientfrontpage/success-requirement/', views.SuccessRequirementView.as_view(), name='success_requirement'),
+    path('clientfrontpage/scheduling_client/', views.client_schedule_view, name='scheduling_client'),
+
 ]
 

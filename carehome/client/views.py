@@ -14,6 +14,7 @@ from .forms import WeekForm
 from .requirement import SubmitRequirementView
 from django.views.generic import TemplateView
 from django.views.generic import View
+from Agency.client_schedule import client_schedule_view
 
 
 

@@ -13,14 +13,18 @@ def match_staff(request):
     context = {}
     current_date = date.today()
     weeks = Week.objects.filter(date__gte=current_date).order_by('week_name', 'date')
-    week_names = sorted(set(weeks.values_list('week_name', flat=True)))
-    week_years = sorted(set(weeks.values_list('date__year', flat=True)))
+    
+    if not weeks.exists():
+        messages.error(request, 'There are no requirements available.')
+    else:
+        week_names = sorted(set(weeks.values_list('week_name', flat=True)))
+        week_years = sorted(set(weeks.values_list('date__year', flat=True)))
+        context.update({
+            'week_names': week_names,
+            'week_years': week_years,
+            'current_date': current_date,
+        })
 
-    context = {
-        'week_names': week_names,
-        'week_years': week_years,
-        'current_date': current_date,
-    }
 
     if request.method == 'POST':
         week_name = request.POST.get('week_name')
