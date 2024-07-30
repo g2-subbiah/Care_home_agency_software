@@ -1,0 +1,55 @@
+<!-- application_detail.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Details</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1>Application Details</h1>
+        <div class="row">
+            <div class="col-md-6">
+                <h2>Personal Details</h2>
+                <table class="table">
+                    <tbody>
+                        <tr><th>First Name</th><td>{{ personal_details.first_name }}</td></tr>
+                        <tr><th>Last Name</th><td>{{ personal_details.last_name }}</td></tr>
+                        <tr><th>Gender</th><td>{{ personal_details.gender }}</td></tr>
+                        <tr><th>Mobile Number</th><td>{{ personal_details.mobile_number }}</td></tr>
+                        <tr><th>Email ID</th><td>{{ personal_details.email_id }}</td></tr>
+                        <tr><th>Address</th><td>{{ personal_details.address }}</td></tr>
+                        <tr><th>Emergency Contact Number</th><td>{{ personal_details.emergency_contact_number }}</td></tr>
+                        <tr><th>NI Number</th><td>{{ personal_details.ni_number }}</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-6">
+                <h2>Document Collection</h2>
+                <table class="table">
+                    <tbody>
+                        <tr><th>Passport Number</th><td>{{ documents_collection.passport_number }}</td></tr>
+                        <tr><th>Passport Date</th><td>{{ documents_collection.passport_date }}</td></tr>
+                        <tr><th>Passport Expiry Date</th><td>{{ documents_collection.passport_expiry_date }}</td></tr>
+                        <tr><th>BRP Number</th><td>{{ documents_collection.brp_number }}</td></tr>
+                        <tr><th>BRP Date</th><td>{{ documents_collection.brp_date }}</td></tr>
+                        <tr><th>BRP Expiry Date</th><td>{{ documents_collection.brp_expiry_date }}</td></tr>
+                        <tr><th>Training Number</th><td>{{ documents_collection.training_number }}</td></tr>
+                        <tr><th>Training Date</th><td>{{ documents_collection.training_date }}</td></tr>
+                        <tr><th>Training Expiry Date</th><td>{{ documents_collection.training_expiry_date }}</td></tr>
+                        <tr><th>DBS Number</th><td>{{ documents_collection.dbs_number }}</td></tr>
+                        <tr><th>DBS Date</th><td>{{ documents_collection.dbs_date }}</td></tr>
+                        <tr><th>DBS Expiry Date</th><td>{{ documents_collection.dbs_expiry_date }}</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="text-center mt-4">
+            <a href="{% url 'approve_application' personal_details.id %}" class="btn btn-success">Approve</a>
+            <a href="{% url 'reject_application' personal_details.id %}" class="btn btn-danger">Reject</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -27,6 +27,11 @@ urlpatterns = [
     path('schedule_page1/client_schedule/', views.schedule_view, name='client_schedule'),  
     path('agencyfrontpage/schedule_page2/', views.availability_view, name='schedule_page2'),
     path('schedule_page1/staff_schedule/', views.availability_view, name='staff_schedule'),  
+    path('agencyfrontpage/pending_applications/', views.list_applications, name='pending_applications'),
+    path('application/<int:pk>/', views.application_detail, name='application_detail'),
+    path('approve_application/<int:pk>/', views.approve_application, name='approve_application'),
+    path('reject_application/<int:pk>/', views.reject_application, name='reject_application'),
+    path('agencyfrontpage/staff_profile/', views.staff_profile, name='staff_profile'),
 
 ]
 

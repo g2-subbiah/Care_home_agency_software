@@ -29,6 +29,8 @@ from .payslips import upload_payslip
 from .allotments import match_staff, save_preferences_logic
 from .client_schedule import schedule_view
 from staff.staff_schedule import availability_view
+from .application_review import approve_application, application_detail, list_applications, reject_application
+from .staff_profile import staff_profile
 
 User = get_user_model()
 
@@ -71,9 +73,13 @@ def register(request):
             return render(request, 'agency/register.html', {'form': form})
         
     else:
-        form = UserRegistrationForm()
+        initial_data = {
+            'first_name': request.GET.get('first_name', ''),
+            'last_name': request.GET.get('last_name', ''),
+            'email': request.GET.get('email', ''),
+        }
+        form = UserRegistrationForm(initial=initial_data)
         return render(request, 'agency/register.html', {'form': form})
-    
 
 def register_client(request):
     if request.method == 'POST':

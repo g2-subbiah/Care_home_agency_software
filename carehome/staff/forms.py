@@ -7,6 +7,7 @@ from django.utils import timezone
 from .models import TimeSheet
 from Agency.forms import ClientLoginForm 
 from django.contrib.auth import get_user_model
+from .models import PersonalDetails, DocumentsCollection
 
 
 CustomUser = get_user_model()
@@ -57,3 +58,41 @@ class WeekForm_2(forms.ModelForm):
             self.fields['staff_name'].initial = f"{user.first_name} {user.last_name}"
         for field in self.fields.values():
             field.required = True
+
+
+class PersonalDetailsForm(forms.ModelForm):
+    class Meta:
+        model = PersonalDetails
+        fields = ['first_name', 'last_name', 'gender', 'mobile_number', 'email_id', 'address', 'emergency_contact_number', 'ni_number']
+
+from django import forms
+
+class DocumentsCollectionForm(forms.ModelForm):
+    passport_document_number = forms.CharField(max_length=100, required=False)
+    passport_document_date = forms.DateField(required=False)
+    passport_document_expiry_date = forms.DateField(required=False)
+    passport_upload = forms.FileField(required=False)
+    
+    brp_document_number = forms.CharField(max_length=100, required=False)
+    brp_document_date = forms.DateField(required=False)
+    brp_document_expiry_date = forms.DateField(required=False)
+    brp_upload = forms.FileField(required=False)
+    
+    training_document_number = forms.CharField(max_length=100, required=False)
+    training_document_date = forms.DateField(required=False)
+    training_document_expiry_date = forms.DateField(required=False)
+    training_upload = forms.FileField(required=False)
+    
+    dbs_document_number = forms.CharField(max_length=100, required=False)
+    dbs_document_date = forms.DateField(required=False)
+    dbs_document_expiry_date = forms.DateField(required=False)
+    dbs_upload = forms.FileField(required=False)
+
+    class Meta:
+        model = DocumentsCollection
+        fields = [
+            'passport_document_number', 'passport_document_date', 'passport_document_expiry_date', 'passport_upload',
+            'brp_document_number', 'brp_document_date', 'brp_document_expiry_date', 'brp_upload',
+            'training_document_number', 'training_document_date', 'training_document_expiry_date', 'training_upload',
+            'dbs_document_number', 'dbs_document_date', 'dbs_document_expiry_date', 'dbs_upload'
+        ]

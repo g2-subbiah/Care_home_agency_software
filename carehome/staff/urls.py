@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-
+from .views import FileUploadView
 
 urlpatterns = [
     path("staffloginpage/", views.stafflogin, name='staff-login'),
@@ -17,6 +17,10 @@ urlpatterns = [
     path('stafffrontpage/staff_weekly_timesheets/', views.StaffWeeklyTimesheetsView.as_view(), name='staff_weekly_timesheets'),
     path('stafffrontpage/download_payslip/', views.download_payslip, name='download_payslip'),
     path('stafffrontpage/scheduling_staff/', views.staff_availability_view, name='scheduling_staff'),
+    path('staffloginpage/new_staff/', views.new_staff, name='new_staff'),
+    path('upload/', FileUploadView.as_view(), name='file_upload'),
+    path('new_staff/success_application/', views.success, name='success_application'),
+    path('stafffrontpage/profile_section/', views.profile_section, name='profile_section'),
 
 ] 
 

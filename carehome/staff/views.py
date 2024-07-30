@@ -27,6 +27,8 @@ from django.views.generic import View
 from Agency.views import StaffWeeklyTimesheetsView
 from .download_payslip import download_payslip
 from .staff_schedule import availability_view, staff_availability_view
+from .new_staff import save_document, FileUploadView, success, new_staff
+from .profile_section import profile_section
 
 
 #from .create_week import CreateWeeksTableView

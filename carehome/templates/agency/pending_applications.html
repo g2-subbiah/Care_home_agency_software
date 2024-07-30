@@ -1,0 +1,39 @@
+<!-- list_applications.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submitted Applications</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1>Submitted Applications</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for application in applications %}
+                <tr>
+                    <td>{{ application.id }}</td>
+                    <td>{{ application.first_name }}</td>
+                    <td>{{ application.last_name }}</td>
+                    <td>
+                        <a href="{% url 'application_detail' application.id %}" class="btn btn-info">View Details</a>
+                        <a href="{% url 'approve_application' application.id %}" class="btn btn-success">Approve</a>
+                        <a href="{% url 'reject_application' application.id %}" class="btn btn-danger">Reject</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
