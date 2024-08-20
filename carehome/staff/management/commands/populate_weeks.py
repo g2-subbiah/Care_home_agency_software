@@ -31,7 +31,7 @@ def get_week_date_range(year, week_number):
 
 def generate_weeks_table(start_year, end_year):
     """
-    Generate a table of weeks from 'Week 1 of start_year-end_year' to the last week of March end_year with their date ranges.
+    Generating a table of weeks from 'Week 1 of start_year-end_year' to the last week of March end_year with their date ranges.
     """
     weeks_table = []
     current_year = start_year

@@ -21,8 +21,6 @@ def default_if_none_or_zero(value, default_text='-'):
     return value
 
 
-register = template.Library()
-
 @register.filter
 def expiry_status(expiry_date):
     if expiry_date:

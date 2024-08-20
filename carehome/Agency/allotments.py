@@ -95,7 +95,7 @@ def save_preferences_logic(request):
         week_name = request.POST.get('week_name')
 
         try:
-            date_value = datetime.strptime(date_value, "%B %d, %Y").strftime("%Y-%m-%d")
+            date_value = datetime.strptime(date_value, "%b. %d, %Y").strftime("%Y-%m-%d")
         except ValueError:
             return JsonResponse({'error': 'Invalid date format. Please use YYYY-MM-DD format.'}, status=400)
 
